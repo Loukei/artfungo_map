@@ -95,6 +95,8 @@ def searchByKey(query:str) -> pd.DataFrame:
     driver.close()
     return result
 
-data:pd.DataFrame = searchByKey('嘉義市') # about 25.4 sec
+query:str = input("請輸入查詢關鍵字:")
+# data:pd.DataFrame = searchByKey('嘉義市') # about 25.4 sec
+data:pd.DataFrame = searchByKey(query)
 # 保存檔案
 data.to_csv('data.csv')

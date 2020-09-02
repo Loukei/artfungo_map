@@ -42,10 +42,12 @@ BINGMAP_API_KEY = "YOUR_KEY"
 ## 開發筆記
 
 這個專案是用來做python新手練習，開發大約花了兩個禮拜。
+
 網路的時代多數的資訊都在網頁上，學會自動擷取資訊可以省下大量時間。
+
 首先選擇folium與selenium作為開發使用的套件，因為他們都號稱易於使用。
 
-### folium 建立地圖，保存
+### **folium 建立地圖，保存**
 
 這裡應該沒有太多困難，location代表地圖中心點的經緯度(lat,lng)，zoom_start代表倍率，tiles代表使用的地圖供應商
 
@@ -72,9 +74,10 @@ webbrowser.open(abs_path)
 - [folium:Getting Started](https://python-visualization.github.io/folium/quickstart.html#Getting-Started)
 - [webbrowser --- 方便的Web浏览器控制器](https://docs.python.org/zh-cn/3/library/webbrowser.html)
 
-### folium 添加marker
+### **folium 添加marker**
 
-所謂marker就是指我們在google map上常見的紅色標記，將來要透過marker添加商家的訊息上去
+所謂marker就是指我們在google map上常見的紅色標記，將來要透過marker添加商家的訊息上去。
+
 location參數一樣是輸入(lat,lng)，tooltip代表滑鼠懸停的訊息，popup表示點擊後的資訊
 
 ``` python
@@ -83,13 +86,15 @@ folium.Marker(location=gcode,tooltip=shopname,popup=popup).add_to(map)
 
 - [folium:Markers](https://python-visualization.github.io/folium/quickstart.html#Markers)
 
-### geocoder轉換地址與地理位置
+### **geocoder轉換地址與地理位置**
 
 開發到這裡應該也察覺到了，繪製地圖需要將查詢地址轉為經緯度的服務。
+
 查詢的服務每家的準確度都不同，以台灣來說使用TGOS或者Google map比較好。
+
 TGOS為內政部提供的開放資料，而google map則是有真實的在台灣路上蒐集資訊。
-TGOS沒有python的api，google map需要使用信用卡開通服務
-我最後是使用bing map來做。
+
+TGOS沒有python的api，google map需要使用信用卡開通服務，我最後是使用bing map來做。
 
 geocoder模組支援許多地圖服務商的地址轉換工具，包含google、mapbox、OpenstreetMap等。
 參數address是查尋的地址，基本上附加國家名稱會更準確，key為api key的字串
@@ -100,9 +105,10 @@ latlng:tuple = geocoder.bing(address, key = os.getenv('BINGMAP_API_KEY')).latlng
 
 - [Geocoder](https://geocoder.readthedocs.io/)
 
-### 使用env檔管理api key
+### **使用env檔管理api key**
 
-api key都是有限制流量的，你可以想像成每個人的手機通信費一樣，因此絕對不要公開個人開發用的api key
+api key都是有限制流量的，你可以想像成每個人的手機通信費一樣，因此絕對不要公開個人開發用的api key。
+
 .env檔是一種純文字的格式，用來保存每個專案的環境變數，同時gitignore也不會同步env檔
 
 ``` python
@@ -120,7 +126,7 @@ BINGMAP_API_KEY = "YOUR API KEY"
 - [python-dotenv](https://pypi.org/project/python-dotenv/)
 - [Hiding API Keys with Environment Variables (dotenv) and Pushing Code to GitHub](https://www.youtube.com/watch?v=17UVejOw3zA)
 
-### Selenium開啟網頁
+### **Selenium開啟網頁**
 
 作為爬蟲的入門，selenium是很適合新手的工具，特別是對網頁技術還不熟悉的使用者。
 selenium會自動開啟瀏覽器執行網頁，點擊按鈕與連結，輸入字串到表單等，一切都在你眼前自動操作。
@@ -143,7 +149,7 @@ driver.get('https://artsfungo.moc.gov.tw/promote_s/public/store') # 開啟藝fun
 - [chromedriver-autoinstaller](https://pypi.org/project/chromedriver-autoinstaller/)
 - [Python爬蟲學習筆記(二) — Selenium自動化+Katalon Recorder](https://medium.com/@yanweiliu/python%E7%88%AC%E8%9F%B2%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98-%E4%BA%8C-selenium%E8%87%AA%E5%8B%95%E5%8C%96-ab0a27a94ff2)
 
-### 輸入關鍵字
+### **輸入關鍵字**
 
 爬蟲的第一步是搜尋網頁中的元素進行操作，這需要使用者有一定的網頁設計知識。
 selenium提供幾種不同搜尋的方法:
@@ -170,7 +176,7 @@ input_element.send_keys(query)
 第一行透過driver取得當前網頁中的輸入框，回傳一個webelement。
 利用webelement的`send_keys()`方法輸入搜尋字串，注意到如果抓到的元素不是input標籤，`send_keys()`方法不會生效。
 
-### 按下搜尋按鈕
+### **按下搜尋按鈕**
 
 藝fun卷網站不提供"輸入Enter"來搜尋的功能，因此需要按下旁邊的搜尋紐。
 webelement使用`click()`方法按下按鈕。
@@ -180,7 +186,7 @@ search_element = driver.find_element_by_css_selector('#div-result > div > a')
 search_element.click()
 ```
 
-### 等待搜尋結果
+### **等待搜尋結果**
 
 藝fun卷網站使用ajax技術，即網頁內容動態加載的方式，在按下搜尋鈕後不需要重新將整個網頁載入，而是發出特定的request等待server回傳資料，並更新下方的table元素。
 
@@ -206,6 +212,7 @@ myDynamicElement = driver.find_element_by_id("myDynamicElement")
 ```
 
 顯式等待:
+
 selenium會在特定的條件達成後立即執行下一步，同時限制最長等待時間
 這也是我在這裡使用的方法，等待table > tbody > tr出現並收集所有出現的tr元素內容
 下面的程式碼會等待最長7秒，如果出現(可見的狀態)tr元素則將所有tr收集起來並回傳list
@@ -234,7 +241,7 @@ except:
 - [How to recursively scrape table from pages using python selenium](https://stackoverflow.com/questions/57446861/how-to-recursively-scrape-table-from-pages-using-python-selenium)
 - [Waiting for a table to load completely using selenium with python](https://stackoverflow.com/questions/25221580/waiting-for-a-table-to-load-completely-using-selenium-with-python)
 
-### 取得table元素的頁數
+### **取得table元素的頁數**
 
 藝fun卷的網頁在查詢之前是不會顯示tfoot元素，也就是頁碼，直到查詢之後才能得知搜索結果有幾頁。
 因此此項作業必須在第一頁出現之後才能取得。
@@ -251,7 +258,7 @@ pageitems = pagination.find_elements_by_class_name('page-item')
 return len(pageitems) - 4
 ```
 
-### 解析與取得網頁內容
+### **解析與取得網頁內容**
 
 selenium的webelement提供取得網頁屬性的方法
 
@@ -281,7 +288,7 @@ input['電話號碼'].append(row.find_element_by_xpath('./td[4]').text)
 input['藝文類型'].append(row.find_element_by_xpath('./td[5]').text)
 ```
 
-### Pandas
+### **Pandas**
 
 Pandas是一個資料處理的框架，提供使用者處理表格資料。
 
@@ -309,7 +316,7 @@ result = result.append(row,ignore_index=True)
 
 有了這些就可以迭代取出table元素裡的每一頁內容並填入DataFrame
 
-### 將DataFrame輸出成csv檔
+### **將DataFrame輸出成csv檔**
 
 將爬取到的內容儲存成csv檔，減少執行爬蟲消耗的時間
 
@@ -317,7 +324,7 @@ result = result.append(row,ignore_index=True)
 result.to_csv('data.csv')
 ```
 
-### 將取得的html原始碼存檔
+### **將取得的html原始碼存檔**
 
 ``` python
 with open('table.html','w',encoding='utf8') as file:

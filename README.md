@@ -1,5 +1,7 @@
 # artfungo_map
 
+**<!> This repo is archived,since [artsfungo](https://artsfungo.moc.gov.tw) has closed**
+
 ## Describe
 
 查詢並爬取藝fun劵商家(https://artsfungo.moc.gov.tw/promote_s/public/store)

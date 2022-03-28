@@ -37,8 +37,8 @@ BINGMAP_API_KEY = "YOUR_KEY"
 1. 使用selenium開啟chrome瀏覽器，加載https://artsfungo.moc.gov.tw/promote_s/public/store
 2. 輸入關鍵字，擷取商家名稱、地址等資訊
 3. 透過geocoder將地址轉為經緯度並記錄下來(這裡使用bing map api)
-4. 將步驟4的經緯度透過folium繪製在地圖上並標記
-5. 將地圖離線保存
+4. 將步驟3的經緯度透過`folium`繪製在地圖上並標記
+5. 將地圖檔案保存
 6. 用瀏覽器開啟地圖
 
 ## 開發筆記
@@ -47,7 +47,7 @@ BINGMAP_API_KEY = "YOUR_KEY"
 
 網路的時代多數的資訊都在網頁上，學會自動擷取資訊可以省下大量時間。
 
-首先選擇folium與selenium作為開發使用的套件，因為他們都號稱易於使用。
+首先選擇`folium`與`selenium`作為開發使用的套件，因為他們都號稱易於使用。
 
 ### **folium 建立地圖，保存**
 
@@ -78,7 +78,7 @@ webbrowser.open(abs_path)
 
 ### **folium 添加marker**
 
-所謂marker就是指我們在google map上常見的紅色標記，將來要透過marker添加商家的訊息上去。
+所謂marker就是指我們在`google map`上常見的紅色標記，將來要透過marker添加商家的訊息上去。
 
 location參數一樣是輸入(lat,lng)，tooltip代表滑鼠懸停的訊息，popup表示點擊後的資訊
 
@@ -92,13 +92,13 @@ folium.Marker(location=gcode,tooltip=shopname,popup=popup).add_to(map)
 
 開發到這裡應該也察覺到了，繪製地圖需要將查詢地址轉為經緯度的服務。
 
-查詢的服務每家的準確度都不同，以台灣來說使用TGOS或者Google map比較好。
+查詢的服務每家的準確度都不同，以台灣來說使用`TGOS`或者`Google map`比較好。
 
-TGOS為內政部提供的開放資料，而google map則是有真實的在台灣路上蒐集資訊。
+`TGOS`為內政部提供的開放資料，而`google map`則是有真實的在台灣路上蒐集資訊。
 
-TGOS沒有python的api，google map需要使用信用卡開通服務，我最後是使用bing map來做。
+TGOS沒有python的api，`google map`需要使用信用卡開通服務，我最後是使用bing map來做。
 
-geocoder模組支援許多地圖服務商的地址轉換工具，包含google、mapbox、OpenstreetMap等。
+`geocoder`模組支援許多地圖服務商的地址轉換工具，包含`google`、`mapbox`、`OpenstreetMap`等。
 參數address是查尋的地址，基本上附加國家名稱會更準確，key為api key的字串
 
 ``` python
@@ -294,7 +294,7 @@ input['藝文類型'].append(row.find_element_by_xpath('./td[5]').text)
 
 Pandas是一個資料處理的框架，提供使用者處理表格資料。
 
-Pandas也可以撈取html的table，但是並不會過濾內容。
+Pandas也可以撈取html的table，但是並不會過濾內容()。
 
 ``` python
 import pandas as pd
@@ -337,31 +337,43 @@ with open('table.html','w',encoding='utf8') as file:
 
 **效率不高**
 
-可以發現使用selenium爬取資料相當花費時間，它本身做自動化而非設計來爬蟲的框架，開啟瀏覽器不僅耗時且花費記憶體，也無法針對ajax的部分做良好的處理，像是要爬取搜尋第二頁的內容，因為table內部本身已經有第一頁的資料，除非紀錄並比對內容差異，否則程式無法知道第二頁以後內容是否更新。
+可以發現使用`selenium`爬取資料相當花費時間，它本身做自動化而非設計來爬蟲的框架，開啟瀏覽器不僅耗時且花費記憶體，也無法針對ajax的部分做良好的處理，像是要爬取搜尋第二頁的內容，因為table內部本身已經有第一頁的資料，除非紀錄並比對內容差異，否則程式無法知道第二頁以後內容是否更新。
 
-另一個問題是我沒有採取async的方式，在將地址轉為經緯度值的時候都需要等待server回傳才能執行下一個動作。
+另一個問題是我沒有採取`async`的方式，在將地址轉為經緯度值的時候都需要等待server回傳才能執行下一個動作。
 
 最後，我是使用爬取店家資訊 > 查詢地理位址 > 建立marker 的順序依序執行三個迴圈來操作，如果把三件事情用一個迴圈做完可以跑的更快。
 
 **UI問題**
 
 folium的存檔功能還是要上網才能看到地圖，無法完全離線使用，這樣子比起手機APP還難用。
-另一個是店家的資訊比較多的情況下，使用網頁的list連動marker會比較好，就像是google map一樣。
+另一個是店家的資訊比較多的情況下，使用網頁的list連動marker會比較好，就像是`google map`一樣。
+
+**離線地圖的解決方式**
+
+1. 自架一個本地Server來提供圖層(tiles)
+   1. [Host Your Own Offline Mapping Server with Jupyter Notebook](https://towardsdatascience.com/host-your-own-offline-mapping-server-with-jupyter-notebook-ff21b878b4d7)
+
+2. 將儲存的商家資料地理標記儲存成KML(Keyhole Markup Language)格式
+   1. 通過[Google我的地圖](https://www.google.com.tw/intl/zh-TW/maps/about/mymaps/)來匯入KML地理標記，可以在手機APP上開啟，並且使用者可以離線下載來使用，應該會是最適合一般使用者的方案。
+   2. KML是公開的格式，因此其他的離線地圖APP如[MAPS.ME](https://play.google.com/store/apps/details?id=com.mapswithme.maps.pro&hl=zh_TW&gl=US)也可以匯入使用。
 
 ## Reference
 
-[透過 Selenium 操作下拉式選單 (Select)](https://jzchangmark.wordpress.com/2015/03/05/%E9%80%8F%E9%81%8E-selenium-%E6%93%8D%E4%BD%9C%E4%B8%8B%E6%8B%89%E5%BC%8F%E9%81%B8%E5%96%AE-select/)
+- [透過 Selenium 操作下拉式選單 (Select)](https://jzchangmark.wordpress.com/2015/03/05/%E9%80%8F%E9%81%8E-selenium-%E6%93%8D%E4%BD%9C%E4%B8%8B%E6%8B%89%E5%BC%8F%E9%81%B8%E5%96%AE-select/)
 
-[Python 3 筆記 - 自動安裝所需的 Module](https://mrnegativetw.github.io/Python-3-%E7%AD%86%E8%A8%98/Python3%E7%AD%86%E8%A8%98-%E8%87%AA%E5%8B%95%E5%AE%89%E8%A3%9D%E6%89%80%E9%9C%80%E7%9A%84Module/)
+- [Python 3 筆記 - 自動安裝所需的 Module](https://mrnegativetw.github.io/Python-3-%E7%AD%86%E8%A8%98/Python3%E7%AD%86%E8%A8%98-%E8%87%AA%E5%8B%95%E5%AE%89%E8%A3%9D%E6%89%80%E9%9C%80%E7%9A%84Module/)
 
 ### python 傳參機制
-[Python 到底是 pass by value 還是 pass by reference? 一次搞懂程式語言的函式傳參!](http://dokelung.me/category/python/python-evaluation-strategy/)
+
+- [Python 到底是 pass by value 還是 pass by reference? 一次搞懂程式語言的函式傳參!](http://dokelung.me/category/python/python-evaluation-strategy/)
 
 ### pandas datafram
-[pandas入门](https://pda.readthedocs.io/en/latest/chp5.html)
 
-[Add one row to pandas DataFrame](https://stackoverflow.com/questions/10715965/add-one-row-to-pandas-dataframe)
+- [pandas入门](https://pda.readthedocs.io/en/latest/chp5.html)
+
+- [Add one row to pandas DataFrame](https://stackoverflow.com/questions/10715965/add-one-row-to-pandas-dataframe)
 
 ### AJAX處理
-[Scrapy爬虫框架教程（四）-- 抓取AJAX异步加载网页](https://zhuanlan.zhihu.com/p/26257790)
-[Requests: 让 HTTP 服务人类 快速上手](https://requests.readthedocs.io/zh_CN/latest/user/quickstart.html#module-requests.models)
+
+- [Scrapy爬虫框架教程（四）-- 抓取AJAX异步加载网页](https://zhuanlan.zhihu.com/p/26257790)
+- [Requests: 让 HTTP 服务人类 快速上手](https://requests.readthedocs.io/zh_CN/latest/user/quickstart.html#module-requests.models)

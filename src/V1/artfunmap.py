@@ -1,5 +1,5 @@
 '''
-使用者指定關鍵字，利用爬蟲擷取藝fun卷商家資訊，並繪製成地圖後儲存成html
+使用者指定關鍵字,利用爬蟲擷取藝fun卷商家資訊,並繪製成地圖後儲存成html
 '''
 import pandas as Pandas
 import os
@@ -11,7 +11,7 @@ import webbrowser
 
 def latlngBound(box:list,latlng:tuple) ->list:
     '''
-    將一個bounding box與一個坐標系latlng計算，回傳新的bounding box
+    將一個bounding box與一個坐標系latlng計算,回傳新的bounding box
     [(-90.0,-180.0),(90.0,180.0)]
     '''
     lat:float = latlng[0]
@@ -28,7 +28,6 @@ def getBoundingBoxCenter(box:list,ndigits: int) -> tuple:
     return (lat,lng)
 
 def buildMakers(data:Pandas.DataFrame,map:folium.map):
-    # folium.Marker(location = gcode,tooltip=shopname).add_to(map)
     for i,row in data.iterrows():
         gcode:tuple = data.loc[i,'經緯度']
         shopname:str = data.loc[i,'店名']
@@ -43,6 +42,7 @@ def openFileOnBrowser(path:str) -> None:
 # 讀取先前爬蟲抓取的商店內容
 data = Pandas.read_csv('data.csv') 
 load_dotenv() # 從.env載入API key 
+
 # 將地址轉為geocode，同時計算Bounding box
 latlng_list:list = []
 bBox = [(90.0,180.0),(-90.0,-180.0)] # 初始值為與[最大座標,最小座標]
@@ -55,6 +55,7 @@ for i in range(len(data.index)): #
     else:
         latlng_list.append(latlng)
         bBox = latlngBound(bBox,latlng)
+
 # 將geocode整合進data
 data['經緯度'] = latlng_list
 # 由bounding box計算地理中心點(4捨5入至小數第5位)

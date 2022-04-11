@@ -1,5 +1,5 @@
 """
-使用selenium爬蟲擷取藝fun卷網站合作店家資料，輸出地址與店名
+使用selenium爬蟲擷取藝fun卷網站合作店家資料,輸出地址與店名
 """
 from selenium import webdriver
 import sys

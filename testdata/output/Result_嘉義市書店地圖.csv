@@ -1,0 +1,25 @@
+house_address,provider,success,lat,lng,match_address,err_message
+嘉義市東區體育路29號,bing,True,23.47184,120.46086,"29, Tiyu Road, East District, Chiayi City 60069",OK
+嘉義市東區和平路227號,bing,True,23.47789,120.45734,"227, Heping Road, East District, Chiayi City 60048",OK
+嘉義市東區大業街97號,bing,True,23.46247,120.45318,"97, Daye Street, East District, Chiayi City 60062",OK
+嘉義市東區民族路90號,bing,True,23.47698,120.4596,"90, Minzu Road, East District, Chiayi City 60045",OK
+嘉義市東區忠孝路600號4樓,bing,True,23.49197,120.45208,"4, Zhongxiao Road Lane 401, East District, Chiayi City 60080",OK
+嘉義市東區長榮街116號,bing,True,23.48413,120.4542,"116, Changrong Street, East District, Chiayi City 60048",OK
+嘉義市東區中山路203號,bing,True,23.48109,120.45265,"203, Zhongshan Road, East District, Chiayi City 60041",OK
+嘉義市東區啟明路136號,bing,True,23.47874,120.46302,"136, Qiming Road, East District, Chiayi City 600",OK
+嘉義市東區忠孝路570-1號,bing,True,23.51626,120.44198,"790-1, Zhongxiao Road, East District, Chiayi City 621",OK
+嘉義市東區中山路255號,bing,True,23.48046,120.45128,"255, Zhongshan Road, East District, Chiayi City 60006",OK
+嘉義市東區義教街688號,bing,True,23.49847,120.45435,"688, Yijiao Street, East District, Chiayi City 60073",OK
+嘉義市東區中山路77號,bing,True,23.48199,120.45848,"77, Zhongshan Road, East District, Chiayi City 60041",OK
+嘉義市西區北社尾路47號,bing,True,23.49235,120.41779,"Beishewei 6 Road, West District, Chiayi City 600",OK
+嘉義市西區國華街60號,bing,True,23.47406,120.44916,"60, Guohua Street, West District, Chiayi City 600",OK
+嘉義市西區杭州三街66號,bing,True,23.46709,120.4438,"66, Hangzhou 3rd Street, West District, Chiayi City 60059",OK
+嘉義市西區民生北路116號2樓,bing,True,23.48095,120.44574,"2, Minsheng North Road Lane 245, West District, Chiayi City 60048",OK
+嘉義市西區北興街86號,bing,True,23.48346,120.44291,"86, Beixing Street, West District, Chiayi City 60092",OK
+嘉義市西區民生南路349號,bing,True,23.46134,120.44403,"349, Minsheng South Road, West District, Chiayi City 60051",OK
+嘉義市西區新榮路323號,bing,True,23.47901,120.44407,"323, Xinrong Road, West District, Chiayi City 60050",OK
+嘉義市西區民族路881號,bing,True,23.47558,120.44454,"Minzu Road, West District, Chiayi City 60045",OK
+嘉義市西區中山路583號,bing,True,23.47914,120.44242,"583, Zhongshan Road, West District, Chiayi City 403",OK
+嘉義市西區德安路35號,bing,True,23.48388,120.43251,"35, De-an Road, West District, Chiayi City 60085",OK
+嘉義市西區民生南路359號,bing,True,23.46112,120.44391,"359, Minsheng South Road, West District, Chiayi City 60051",OK
+嘉義市西區中山路370號,bing,True,23.47977,120.44675,"370, Zhongshan Road, West District, Chiayi City 60041",OK

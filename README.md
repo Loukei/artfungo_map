@@ -21,23 +21,24 @@
 
 1. 安裝模組
 
-2. 申請Bing map api(免費) https://www.bingmapsportal.com/ ,在專案資料夾建立一個.env文字檔
+2. 申請[Bing map api(免費)](https://www.bingmapsportal.com/) ,在專案資料夾建立一個`.env`文字檔
+
 ```
 BINGMAP_API_KEY = "YOUR_KEY"
 ```
 
-3. 下載selenium的[chrome webdriver](https://sites.google.com/a/chromium.org/chromedriver/downloads)，注意版本與你的chrome瀏覽器對應，將chromedriver.exe放在專案資料夾
+3. 下載`selenium`的[chrome webdriver](https://sites.google.com/a/chromium.org/chromedriver/downloads)，注意版本與你的chrome瀏覽器對應，將`chromedriver.exe`放在專案資料夾
 
-4. 執行craeler.py爬取藝fun卷資料，會將檔案存成data.csv
+4. 執行`craeler.py`爬取藝fun卷資料，會將檔案存成`data.csv`
 
-5. 執行aftfunmap.py會將data.csv轉為地圖(將地址轉為經緯度會花點時間)，之後打開map.html即可
+5. 執行`aftfunmap.py`會將data.csv轉為地圖(將地址轉為經緯度會花點時間)，之後打開`map.html`即可
 
 ## Work flow
 
-1. 使用selenium開啟chrome瀏覽器，加載https://artsfungo.moc.gov.tw/promote_s/public/store
+1. 使用`selenium`開啟`chrome`瀏覽器，加載[地址](https://artsfungo.moc.gov.tw/promote_s/public/store)
 2. 輸入關鍵字，擷取商家名稱、地址等資訊
-3. 透過geocoder將地址轉為經緯度並記錄下來(這裡使用bing map api)
-4. 將步驟3的經緯度透過`folium`繪製在地圖上並標記
+3. 透過`geocoder`將地址轉為經緯度並記錄下來(這裡使用bing map api)
+4. 將**步驟3**的經緯度透過`folium`繪製在地圖上並標記
 5. 將地圖檔案保存
 6. 用瀏覽器開啟地圖
 
@@ -111,7 +112,7 @@ latlng:tuple = geocoder.bing(address, key = os.getenv('BINGMAP_API_KEY')).latlng
 
 api key都是有限制流量的，你可以想像成每個人的手機通信費一樣，因此絕對不要公開個人開發用的api key。
 
-.env檔是一種純文字的格式，用來保存每個專案的環境變數，同時gitignore也不會同步env檔
+`.env`檔是一種純文字的格式，用來保存每個專案的環境變數，同時`gitignore`也不會同步`env`檔
 
 ``` python
 from dotenv import load_dotenv
@@ -134,7 +135,7 @@ BINGMAP_API_KEY = "YOUR API KEY"
 selenium會自動開啟瀏覽器執行網頁，點擊按鈕與連結，輸入字串到表單等，一切都在你眼前自動操作。
 selenium的缺點最明顯的就是執行緩慢，瀏覽器本身就是記憶體怪獸，還要開啟之後才能進行操作，也沒有很好的針對ajax網頁爬取的方式。
 
-selenium使用webdriver操作瀏覽器，webdriver是針對瀏覽器撰寫的驅動程式，需要上selenium網站進行下載符合你的瀏覽器版本。
+selenium使用`webdriver`操作瀏覽器，webdriver是針對瀏覽器撰寫的驅動程式，需要上selenium網站進行下載符合你的瀏覽器版本。
 
 第二行開啟了一個Chrome瀏覽器，參數指向webdriver的檔案地址
 第三行開啟了藝fun卷的網站
@@ -377,3 +378,6 @@ folium的存檔功能還是要上網才能看到地圖，無法完全離線使�
 
 - [Scrapy爬虫框架教程（四）-- 抓取AJAX异步加载网页](https://zhuanlan.zhihu.com/p/26257790)
 - [Requests: 让 HTTP 服务人类 快速上手](https://requests.readthedocs.io/zh_CN/latest/user/quickstart.html#module-requests.models)
+
+
+- [開放政府- 嘉義市書店地圖](https://data.gov.tw/dataset/82835)

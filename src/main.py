@@ -97,7 +97,6 @@ def process_file(input_file:str, output_file:str, api_key:str) -> None:
         for row in csvReader:
             result:GeocodingResult = bing_address_geocoding(address = row["地址"],api_key=api_key)
             csvWriter.writerow(result)
-
             print(f"Process <{row['地址']}>.")
     pass
 

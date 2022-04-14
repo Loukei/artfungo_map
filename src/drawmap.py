@@ -46,7 +46,7 @@ def test_locations():
         ]
     return r
 
-def create_output_map_path(input_file_path:str,output_folder:str) -> Path:
+def create_output_map_path(input_file_path:str,output_folder:str) -> str:
     """將輸出路徑與輸入檔案結合產生預計要輸出的檔案名稱
 
     Args:
@@ -70,7 +70,7 @@ def create_output_map_path(input_file_path:str,output_folder:str) -> Path:
     if(not output_folder_P.is_dir()):
         raise ValueError(f'Output folder <{output_folder}> is not a folder.')
     timestamp:str = datetime.strftime(datetime.now(tz=timezone.utc),"[%Y%m%d%z_%H'%M'%S]") # ex: "[20220412+0000_03'55'31]"
-    return output_folder_P.joinpath(timestamp + input_file_P.stem).with_suffix('.html')
+    return output_folder_P.joinpath(timestamp + input_file_P.stem).with_suffix('.html').as_posix()
 
 def compute_map_bBox(box:list,latlng:List) -> list:
     "計算地圖的範圍,回傳新的bounding box [(-90.0,-180.0),(90.0,180.0)]"
@@ -135,7 +135,7 @@ def create_map(store_list: List[Store]) -> folium.Map:
             marker:folium.Marker = craete_map_marker(store)
             marker.add_to(fmap)
         else:
-            print(f'Store {store["lat"]}, {store["lng"]}')
+            print(f'[ERROR]Store {store} is not a legal geocode.')
     # --- 將地圖重新套用bBox與地圖中心點 ---
     fmap.fit_bounds(bounds=bBox)
     fmap.location = compute_map_center(box=bBox, ndigits=5)
@@ -144,7 +144,6 @@ def create_map(store_list: List[Store]) -> folium.Map:
 def read_Stores_from_file(input_file_path:str) -> List[Store]:
     stores:List[Store] = []
     with open(file=input_file_path, mode='r', encoding='utf-8',newline='') as csvfile:
-        # fieldnames = ["house_address","provider","success","lat","lng","match_address","err_message"]
         fieldnames = ["行政區","店名","地址","電話","坐標(緯度)","坐標(經度)"]
         csvReader = csv.DictReader(csvfile,fieldnames)
         next(csvReader,None)
@@ -152,6 +151,12 @@ def read_Stores_from_file(input_file_path:str) -> List[Store]:
             s = Store(name=row["店名"],address=row["地址"],phone_number=row["電話"],lat=float(row["坐標(緯度)"]),lng=float(row["坐標(經度)"]))
             stores.append(s)
     return stores
+
+def write_foluim_map(map_path:str,stores:List[Store]):
+    fmap:folium.Map = create_map(stores)
+    fmap.save(map_path)
+    open_file_on_browser(map_path)
+    pass
 
 def main(input_file_path:str,output_folder:str):
     try:
@@ -164,7 +169,6 @@ def main(input_file_path:str,output_folder:str):
         fmap:folium.Map = create_map(stores)
         fmap.save(map_path)
         open_file_on_browser(map_path)
-        # os_system('PAUSE')
     except Exception as e:
         print(e)
     pass

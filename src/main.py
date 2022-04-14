@@ -36,6 +36,7 @@ from typing import TypedDict,List,Dict
 from os import getenv as os_getenv
 from dotenv import load_dotenv # read api key from (.env) file 
 from geocoder import bing as geocoder_bing
+from drawmap import Store,write_foluim_map,create_output_map_path,test_locations
 
 class GeocodingResult(TypedDict):
     """Define the function {bing_address_geocoding} return structure. This Structure also defines output file header.
@@ -75,28 +76,6 @@ def bing_address_geocoding(address:str,api_key:str) -> GeocodingResult:
         err_message = reply.status
     )
 
-def process_file(input_file:str, output_file:str, api_key:str) -> None:
-    """Open {input_file} to read house address, then call Bing map api transfer to latlng, save result to {output_file}.
-
-    Warning: 
-        - If you try to use big csv file for process, use other method like pandas framework.
-
-    Args:
-        input_file (str): _description_
-        output_file (str): _description_
-        api_key (str): _description_
-    """
-    with open(file = input_file, mode = 'r', encoding = 'utf-8', newline = '') as input, open(file = output_file, mode='w',encoding='utf-8', newline = '') as output:
-        csvReader = csv.DictReader(input,fieldnames=["行政區","店名","地址","電話","坐標(緯度)","坐標(經度)"])
-        next(csvReader,None) # skip header row
-        csvWriter = csv.DictWriter(output,fieldnames=GeocodingResult.__annotations__.keys())
-        csvWriter.writeheader()
-        for row in csvReader:
-            result:GeocodingResult = bing_address_geocoding(address = row["地址"],api_key=api_key)
-            csvWriter.writerow(result)
-            print(f"Process <{row['地址']}>.")
-    pass
-
 def geocoding_source_file(input_file:str, api_key:str) -> List[Dict]:
     results:List[GeocodingResult] = []
     with open(file = input_file, mode = 'r', encoding = 'utf-8', newline = '') as input:
@@ -109,6 +88,12 @@ def geocoding_source_file(input_file:str, api_key:str) -> List[Dict]:
     return results
 
 def write_csv_report(results: List[Dict], output_file:str) -> None:
+    """將轉換過的資料(results),寫入目標的csv檔(output_file)
+
+    Args:
+        results (List[Dict]): 地址轉換的列表
+        output_file (str): 儲存的CSV路徑位址
+    """
     with open(output_file, mode='w', encoding='utf-8', newline='') as csvfile:
         csvWriter = csv.DictWriter(csvfile,fieldnames=results[0].keys())
         csvWriter.writeheader()
@@ -116,7 +101,7 @@ def write_csv_report(results: List[Dict], output_file:str) -> None:
             csvWriter.writerow(result)
     pass
 
-def create_output_file_path(output_folder:str,input_file_path:str) -> str:
+def create_output_csv_file_path(output_folder:str,input_file_path:str) -> str:
     """Combine the user defined output folder and data source to create new output file.
 
     Args:
@@ -155,9 +140,18 @@ def get_APIKey_from_env()->str:
 def main(input_file:str,output_folder:str) -> None:
     try:
         bing_api_key = get_APIKey_from_env()
-        output_file:str = create_output_file_path(output_folder,input_file)
-        results = geocoding_source_file(input_file,bing_api_key)
-        write_csv_report(results,output_file)
+        results:List[Dict] = geocoding_source_file(input_file,bing_api_key)
+        output_csv_file:str = create_output_csv_file_path(output_folder,input_file)
+        write_csv_report(results,output_csv_file)
+        # --- 準備填入地圖的數據 ---
+        stores:List[Store] = []
+        for r in results:
+            s = Store(name=r["店名"],address=r["地址"],lat=float(r["坐標(緯度)"]),lng=float(r["坐標(經度)"]),phone_number=r["電話"])
+            stores.append(s)
+        # --- 繪製地圖並開檔 ---
+        map_path:str = create_output_map_path(input_file,output_folder)
+        write_foluim_map(map_path,stores)
+        # --- 
     except Exception as e:
         print(e)
     pass
@@ -165,5 +159,7 @@ def main(input_file:str,output_folder:str) -> None:
 if __name__ == '__main__':
     filepath:str = "testdata\嘉義市書店地圖.csv"
     output_folder:str = "testdata\output"
-    main(filepath,output_folder)
+    # main(filepath,output_folder)
+    stores = test_locations()
+    write_foluim_map('testdata\output\map.html',stores)
     pass

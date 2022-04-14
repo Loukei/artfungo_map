@@ -41,7 +41,6 @@ class GeocodingResult(TypedDict):
     """Define the function {bing_address_geocoding} return structure. This Structure also defines output file header.
 
     Args:
-        house_address (str): Original address from source. ex: 
         Provider (str): API Provider. ex: "bing"
         Success (bool): Is api reply match.
         Lat (float): latitude. ex: None, 25.03360939025879
@@ -49,7 +48,6 @@ class GeocodingResult(TypedDict):
         Match_address (str): ex: None, 'Taipei 101, Taiwan'
         Err_Message (str): Error mesage from api network reply. ex: 'ERROR - No results found', 'OK'
     """
-    house_address:str 
     provider:str
     success:bool
     lat:float
@@ -69,7 +67,6 @@ def bing_address_geocoding(address:str,api_key:str) -> GeocodingResult:
     """
     reply = geocoder_bing(address, key = api_key)
     return GeocodingResult(
-        house_address = address,
         provider = reply.provider,
         success = reply.ok,
         lat = reply.lat,
@@ -107,13 +104,13 @@ def geocoding_source_file(input_file:str, api_key:str) -> List[Dict]:
         next(csvReader,None) # skip header row
         for row in csvReader:
             result:GeocodingResult = bing_address_geocoding(address = row["地址"],api_key=api_key)
-            results.append(result | row) # merge 2 dict
+            results.append(result|row) # merge 2 dict
             print(f"Process <{row['地址']}>.")
     return results
 
 def write_csv_report(results: List[Dict], output_file:str) -> None:
     with open(output_file, mode='w', encoding='utf-8', newline='') as csvfile:
-        csvWriter = csv.DictWriter(csvfile,fieldnames=[])
+        csvWriter = csv.DictWriter(csvfile,fieldnames=results[0].keys())
         csvWriter.writeheader()
         for result in results:
             csvWriter.writerow(result)
@@ -159,9 +156,8 @@ def main(input_file:str,output_folder:str) -> None:
     try:
         bing_api_key = get_APIKey_from_env()
         output_file:str = create_output_file_path(output_folder,input_file)
-        # process_file(input_file = input_file, output_file = output_file, api_key = bing_api_key)
         results = geocoding_source_file(input_file,bing_api_key)
-        print(results)
+        write_csv_report(results,output_file)
     except Exception as e:
         print(e)
     pass

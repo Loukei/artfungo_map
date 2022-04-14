@@ -147,6 +147,7 @@ def read_Stores_from_file(input_file_path:str) -> List[Store]:
         # fieldnames = ["house_address","provider","success","lat","lng","match_address","err_message"]
         fieldnames = ["行政區","店名","地址","電話","坐標(緯度)","坐標(經度)"]
         csvReader = csv.DictReader(csvfile,fieldnames)
+        next(csvReader,None)
         for row in csvReader:
             s = Store(name=row["店名"],address=row["地址"],phone_number=row["電話"],lat=float(row["坐標(緯度)"]),lng=float(row["坐標(經度)"]))
             stores.append(s)
@@ -157,9 +158,9 @@ def main(input_file_path:str,output_folder:str):
         map_path:str = create_output_map_path(input_file_path,output_folder).as_posix()
         print(f"new file name: <{map_path}>")
         # --- 從檔案取出資料 ---
-        stores:List[Store] = test_locations()
-        # stores:List[Store] = read_Stores_from_file(input_file_path)
-        # --- ---
+        # stores:List[Store] = test_locations()
+        stores:List[Store] = read_Stores_from_file(input_file_path)
+        # --- 利用 stores 建立地圖 ---
         fmap:folium.Map = create_map(stores)
         fmap.save(map_path)
         open_file_on_browser(map_path)
@@ -171,10 +172,5 @@ def main(input_file_path:str,output_folder:str):
 if __name__ == "__main__":
     input_file_path: str = "testdata\嘉義市書店地圖.csv"
     output_folder: str = "testdata\output"
-    # main(input_file_path,output_folder)
-    # TODO
-    stores = read_Stores_from_file(input_file_path)
-    for store in stores:
-        print(store)
-        print(check_geocode(store["lat"],store["lng"]) == True)
+    main(input_file_path,output_folder)
     pass

@@ -32,7 +32,7 @@
 import csv
 from pathlib import Path
 from decimal import Decimal
-from typing import TypedDict
+from typing import TypedDict,List,Dict
 from os import getenv as os_getenv
 from dotenv import load_dotenv # read api key from (.env) file 
 from geocoder import bing as geocoder_bing
@@ -100,6 +100,25 @@ def process_file(input_file:str, output_file:str, api_key:str) -> None:
             print(f"Process <{row['地址']}>.")
     pass
 
+def geocoding_source_file(input_file:str, api_key:str) -> List[Dict]:
+    results:List[GeocodingResult] = []
+    with open(file = input_file, mode = 'r', encoding = 'utf-8', newline = '') as input:
+        csvReader = csv.DictReader(input,fieldnames=["行政區","店名","地址","電話","坐標(緯度)","坐標(經度)"])
+        next(csvReader,None) # skip header row
+        for row in csvReader:
+            result:GeocodingResult = bing_address_geocoding(address = row["地址"],api_key=api_key)
+            results.append(result | row) # merge 2 dict
+            print(f"Process <{row['地址']}>.")
+    return results
+
+def write_csv_report(results: List[Dict], output_file:str) -> None:
+    with open(output_file, mode='w', encoding='utf-8', newline='') as csvfile:
+        csvWriter = csv.DictWriter(csvfile,fieldnames=[])
+        csvWriter.writeheader()
+        for result in results:
+            csvWriter.writerow(result)
+    pass
+
 def create_output_file_path(output_folder:str,input_file_path:str) -> str:
     """Combine the user defined output folder and data source to create new output file.
 
@@ -140,7 +159,9 @@ def main(input_file:str,output_folder:str) -> None:
     try:
         bing_api_key = get_APIKey_from_env()
         output_file:str = create_output_file_path(output_folder,input_file)
-        process_file(input_file = input_file, output_file = output_file, api_key = bing_api_key)
+        # process_file(input_file = input_file, output_file = output_file, api_key = bing_api_key)
+        results = geocoding_source_file(input_file,bing_api_key)
+        print(results)
     except Exception as e:
         print(e)
     pass

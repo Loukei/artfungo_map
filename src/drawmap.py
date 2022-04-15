@@ -83,13 +83,23 @@ def compute_map_bBox(box:list,latlng:List) -> list:
     return [(latMin,lngMin),(latMax,lngMax)]
 
 def compute_map_center(box:list,ndigits: int)  -> tuple:
-    "計算地圖中心點"
+    """Compute the map center by {box}
+
+    計算地圖中心點
+
+    Args:
+        box (list): [(latMin,lngMin),(latMax,lngMax)]
+        ndigits (int): 取平均到(ndigits)位數
+
+    Returns:
+        tuple: a geocode with (lat,lng)
+    """
     lat = round( (box[1][0] - box[0][0]) / 2 , ndigits) # (lat_max - lat_min)/2 取至第ndigits位
     lng = round((box[1][1] - box[0][1]) / 2 , ndigits) # (lng_max - lng_min)/2
     return (lat,lng)
 
 def check_geocode(lat:float, lng: float) -> bool:
-    """ 檢查經度與緯度數字
+    """ 檢查經度(lng)與緯度(lat)數字
 
     Args:
         lat (float): 緯度 -90.0 ~ 90.0
@@ -104,7 +114,16 @@ def check_geocode(lat:float, lng: float) -> bool:
         return False
 
 def craete_map_marker(store:Store) -> folium.Marker:
-    "產生Folium的地標(marker)"
+    """Create a folium.Marker by type Store
+    
+    產生Folium的地標(marker)
+    
+    Args:
+        store (Store): 
+
+    Returns:
+        folium.Marker: 
+    """
     location:list = [store["lat"],store["lng"]]
     tooltip:str = f'<h1><strong>{store["name"]}</strong></h1> <p>{store["address"]}</p> <p>{store["phone_number"]}</p>'
     popup:str = store["name"]
@@ -122,6 +141,14 @@ def open_file_on_browser(output_file_path:str) -> None:
     pass
 
 def create_map(store_list: List[Store]) -> folium.Map:
+    """Create map with placemark(List[Store])
+
+    Args:
+        store_list (List[Store]): _description_
+
+    Returns:
+        folium.Map: a datatype for folium to draw a map
+    """
     # --- 初始化地圖資料 ---
     map_center = [23.476856,120.4594929] # 嘉義火車站(暫時的地圖中心點)
     bBox = [(90.0,180.0),(-90.0,-180.0)] # 整個地圖的地標範圍
@@ -141,7 +168,15 @@ def create_map(store_list: List[Store]) -> folium.Map:
     fmap.location = compute_map_center(box=bBox, ndigits=5)
     return fmap
 
-def read_Stores_from_file(input_file_path:str) -> List[Store]:
+def read_stores_from_csv_file(input_file_path:str) -> List[Store]:
+    """_summary_
+
+    Args:
+        input_file_path (str): _description_
+
+    Returns:
+        List[Store]: _description_
+    """
     stores:List[Store] = []
     with open(file=input_file_path, mode='r', encoding='utf-8',newline='') as csvfile:
         fieldnames = ["行政區","店名","地址","電話","坐標(緯度)","坐標(經度)"]
@@ -153,28 +188,25 @@ def read_Stores_from_file(input_file_path:str) -> List[Store]:
     return stores
 
 def write_foluim_map(map_path:str,stores:List[Store]):
+    """Draw placemark(with type store) in foluim.Map
+
+    Args:
+        map_path (str): _description_
+        stores (List[Store]): _description_
+    """
     fmap:folium.Map = create_map(stores)
     fmap.save(map_path)
     open_file_on_browser(map_path)
     pass
 
-def main(input_file_path:str,output_folder:str):
+def example(input_file_path:str,output_folder:str):
     try:
         map_path:str = create_output_map_path(input_file_path,output_folder).as_posix()
         print(f"new file name: <{map_path}>")
         # --- 從檔案取出資料 ---
-        # stores:List[Store] = test_locations()
-        stores:List[Store] = read_Stores_from_file(input_file_path)
-        # --- 利用 stores 建立地圖 ---
-        fmap:folium.Map = create_map(stores)
-        fmap.save(map_path)
-        open_file_on_browser(map_path)
+        # stores:List[Store] = test_locations() # 產生範例
+        stores:List[Store] = read_stores_from_csv_file(input_file_path) # 讀取csv檔並存成指定的格式(store)
+        write_foluim_map(map_path,stores) # 利用 stores 建立地圖
     except Exception as e:
         print(e)
-    pass
-
-if __name__ == "__main__":
-    input_file_path: str = "testdata\嘉義市書店地圖.csv"
-    output_folder: str = "testdata\output"
-    main(input_file_path,output_folder)
     pass

@@ -30,62 +30,62 @@
 #!/usr/bin/python3
 import csv
 from pathlib import Path
-from decimal import Decimal
-from pyclbr import Function
-from typing import TypedDict,List,Dict
+from typing import List,Dict
 from os import getenv as os_getenv
 from dotenv import load_dotenv # read api key from (.env) file 
-from geocoder import bing as geocoder_bing
+# from geocoder import bing as geocoder_bing
 from drawmap import Store,write_foluim_map,create_output_map_path,test_locations
 
-class GeocodingResult(TypedDict):
-    """Define the function {bing_address_geocoding} return structure. This Structure also defines output file header.
+import geocoding
 
-    Args:
-        Provider (str): API Provider. ex: "bing"
-        Success (bool): Is api reply match.
-        Lat (float): latitude. ex: None, 25.03360939025879
-        Lng (float): longitude. ex: None, 121.56500244140625
-        Match_address (str): ex: None, 'Taipei 101, Taiwan'
-        Err_Message (str): Error mesage from api network reply. ex: 'ERROR - No results found', 'OK'
-    """
-    provider:str
-    success:bool
-    lat:float
-    lng:float
-    match_address:str
-    err_message:str
+# class GeocodingResult(TypedDict):
+#     """Define the function {bing_address_geocoding} return structure. This Structure also defines output file header.
 
-def bing_address_geocoding(address:str,api_key:str) -> GeocodingResult:
-    """Turn house {address} to geocode and show other debug message.
+#     Args:
+#         Provider (str): API Provider. ex: "bing"
+#         Success (bool): Is api reply match.
+#         Lat (float): latitude. ex: None, 25.03360939025879
+#         Lng (float): longitude. ex: None, 121.56500244140625
+#         Match_address (str): ex: None, 'Taipei 101, Taiwan'
+#         Err_Message (str): Error mesage from api network reply. ex: 'ERROR - No results found', 'OK'
+#     """
+#     provider:str
+#     success:bool
+#     lat:float
+#     lng:float
+#     match_address:str
+#     err_message:str
 
-    Args:
-        address (str): House address, ex: "台北101"
-        api_key (str): API key for Bing Map Geocoding service
+# def bing_address_geocoding(address:str,api_key:str) -> GeocodingResult:
+#     """Turn house {address} to geocode and show other debug message.
 
-    Returns:
-        GeocodingResult: The Geocoding information result.
-    """
-    reply = geocoder_bing(address, key = api_key)
-    return GeocodingResult(
-        provider = reply.provider,
-        success = reply.ok,
-        lat = reply.lat,
-        lng = reply.lng,
-        match_address = reply.address,
-        err_message = reply.status
-    )
+#     Args:
+#         address (str): House address, ex: "台北101"
+#         api_key (str): API key for Bing Map Geocoding service
 
-def geocoding_csv_file(input_file:str, api_key:str,fieldnames:List,address_name:str) -> List[Dict]:
-    results:List[Dict] = []
-    with open(file = input_file, mode = 'r', encoding = 'utf-8', newline = '') as input:
-        csvReader = csv.DictReader(input,fieldnames)
-        next(csvReader,None) # skip header row
-        for row in csvReader:
-            result:GeocodingResult = bing_address_geocoding(address=row[address_name], api_key=api_key)
-            results.append(result|row) # merge 2 dict
-            print(f"Process <{row[address_name]}>.")
-    return results
+#     Returns:
+#         GeocodingResult: The Geocoding information result.
+#     """
+#     reply = geocoder_bing(address, key = api_key)
+#     return GeocodingResult(
+#         provider = reply.provider,
+#         success = reply.ok,
+#         lat = reply.lat,
+#         lng = reply.lng,
+#         match_address = reply.address,
+#         err_message = reply.status
+#     )
+
+# def geocoding_csv_file(input_file:str, api_key:str,fieldnames:List,address_name:str) -> List[Dict]:
+#     results:List[Dict] = []
+#     with open(file = input_file, mode = 'r', encoding = 'utf-8', newline = '') as input:
+#         csvReader = csv.DictReader(input,fieldnames)
+#         next(csvReader,None) # skip header row
+#         for row in csvReader:
+#             result:GeocodingResult = bing_address_geocoding(address=row[address_name], api_key=api_key)
+#             results.append(result|row) # merge 2 dict
+#             print(f"Process <{row[address_name]}>.")
+#     return results
 
 def write_csv_report(results: List[Dict], output_file:str) -> None:
     """將轉換過的資料(results),寫入目標的csv檔(output_file)
@@ -145,11 +145,8 @@ def get_APIKey_from_env()->str:
 def main(input_file:str,output_folder:str) -> None:
     try:
         bing_api_key = get_APIKey_from_env()
-        # results:List[Dict] = geocoding_source_file(input_file,bing_api_key)
-        # --- 修改讀檔的模式,盡量讓隨著檔案變化的部分保留在最外層 ---
         fieldnames = ["行政區","店名","地址","電話","坐標(緯度)","坐標(經度)"]
-        results:List[Dict] = geocoding_csv_file(input_file=filepath, api_key=bing_api_key, fieldnames=fieldnames, address_name="地址")
-        
+        results:List[Dict] = geocoding.geocoding_csv_file(input_file=filepath, api_key=bing_api_key, fieldnames=fieldnames, address_name="地址")
         output_csv_file:str = create_output_csv_file_path(output_folder,input_file)
         write_csv_report(results,output_csv_file)
         # --- 準備填入地圖的數據 ---
@@ -169,10 +166,4 @@ if __name__ == '__main__':
     filepath:str = "testdata\嘉義市書店地圖.csv"
     output_folder:str = "testdata\output"
     main(filepath,output_folder)
-    # ---
-    # bing_api_key = get_APIKey_from_env()
-    # fieldnames = ["行政區","店名","地址","電話","坐標(緯度)","坐標(經度)"]
-    # results = geocoding_csv_file(input_file=filepath, api_key=bing_api_key, fieldnames=fieldnames, address_name="地址")
-    # for row in results:
-    #     print(row)
     pass

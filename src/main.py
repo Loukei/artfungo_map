@@ -12,13 +12,17 @@
 ## Usage
 
 - Create a `.env` file which include "BINGMAP_API_KEY = YOUR_API_KEY"
-- 
+- 針對你的CSV檔格式
+    - csv檔案第一列必須註明資料欄位名稱,欄位名稱不要與`drawmap.Store`的欄位同名
+    - 修改`fieldnames = ["行政區","店名","地址","電話","坐標(緯度)","坐標(經度)"]`
+    - 修改`address_name`,指向你的地址欄位名稱如"地址"
+    - 撰寫一個函數將csv欄位轉成folium.Marker
 
 ## Note
 
 以我使用Bing Map的經驗, batch geocoding是較不推薦的方式
 - 回應時間較長
-- 只會回傳經緯度數值,不會有錯誤訊息與比對狀態
+- 只會回傳經緯度數值,不會有錯誤訊息與比對結果
 
 ## TODO
 
@@ -29,63 +33,14 @@
 '''
 #!/usr/bin/python3
 import csv
+from dataclasses import dataclass
 from pathlib import Path
 from typing import List,Dict
 from os import getenv as os_getenv
+from unicodedata import name
 from dotenv import load_dotenv # read api key from (.env) file 
-# from geocoder import bing as geocoder_bing
 from drawmap import Store,write_foluim_map,create_output_map_path,test_locations
-
 import geocoding
-
-# class GeocodingResult(TypedDict):
-#     """Define the function {bing_address_geocoding} return structure. This Structure also defines output file header.
-
-#     Args:
-#         Provider (str): API Provider. ex: "bing"
-#         Success (bool): Is api reply match.
-#         Lat (float): latitude. ex: None, 25.03360939025879
-#         Lng (float): longitude. ex: None, 121.56500244140625
-#         Match_address (str): ex: None, 'Taipei 101, Taiwan'
-#         Err_Message (str): Error mesage from api network reply. ex: 'ERROR - No results found', 'OK'
-#     """
-#     provider:str
-#     success:bool
-#     lat:float
-#     lng:float
-#     match_address:str
-#     err_message:str
-
-# def bing_address_geocoding(address:str,api_key:str) -> GeocodingResult:
-#     """Turn house {address} to geocode and show other debug message.
-
-#     Args:
-#         address (str): House address, ex: "台北101"
-#         api_key (str): API key for Bing Map Geocoding service
-
-#     Returns:
-#         GeocodingResult: The Geocoding information result.
-#     """
-#     reply = geocoder_bing(address, key = api_key)
-#     return GeocodingResult(
-#         provider = reply.provider,
-#         success = reply.ok,
-#         lat = reply.lat,
-#         lng = reply.lng,
-#         match_address = reply.address,
-#         err_message = reply.status
-#     )
-
-# def geocoding_csv_file(input_file:str, api_key:str,fieldnames:List,address_name:str) -> List[Dict]:
-#     results:List[Dict] = []
-#     with open(file = input_file, mode = 'r', encoding = 'utf-8', newline = '') as input:
-#         csvReader = csv.DictReader(input,fieldnames)
-#         next(csvReader,None) # skip header row
-#         for row in csvReader:
-#             result:GeocodingResult = bing_address_geocoding(address=row[address_name], api_key=api_key)
-#             results.append(result|row) # merge 2 dict
-#             print(f"Process <{row[address_name]}>.")
-#     return results
 
 def write_csv_report(results: List[Dict], output_file:str) -> None:
     """將轉換過的資料(results),寫入目標的csv檔(output_file)
@@ -155,15 +110,32 @@ def main(input_file:str,output_folder:str) -> None:
         #     s = Store(name=r["店名"],address=r["地址"],lat=float(r["坐標(緯度)"]),lng=float(r["坐標(經度)"]),phone_number=r["電話"])
         #     stores.append(s)
         # --- 繪製地圖並開檔 ---
-        # map_path:str = create_output_map_path(input_file,output_folder)
-        # write_foluim_map(map_path,stores)
+        map_path:str = create_output_map_path(input_file,output_folder)
+        write_foluim_map(map_path,stores)
         # --- TODO KML 處理 ---
     except Exception as e:
         print(e)
     pass
 
+@dataclass
+class PlaceMarker:
+    # TODO check craete_map_marker()
+    name:str
+    lat:float
+    lng:float
+    phone_number:str
+
+    def location(self) -> List[float,float]:
+        return [self.lat,self.lng]
+
+    def tooltip(self) -> str:
+        return f'<h1><strong>{store["name"]}</strong></h1> <p>{store["address"]}</p> <p>{store["phone_number"]}</p>'
+    
+    def popup(self) -> str:
+        return f"{self.name}"
+
 if __name__ == '__main__':
     filepath:str = "testdata\嘉義市書店地圖.csv"
     output_folder:str = "testdata\output"
-    main(filepath,output_folder)
+    # main(filepath,output_folder)
     pass

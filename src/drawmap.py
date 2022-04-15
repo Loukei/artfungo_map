@@ -3,8 +3,6 @@ input: 從儲存的CSV檔案讀取店家資訊
 output: 輸出Foulium地圖
 
 ## TODO
-- 讀取CSV檔
-- 利用csv.dictreader與資料類別來讓資料格式修改時可以自動更改
 - 使用一個類別(Store)來處理資料
     - 該類別可以讀取CSV檔中的資料
     - 驗證經緯度轉換是否成功
@@ -15,10 +13,8 @@ import folium
 from pathlib import Path
 from datetime import datetime,timezone
 from os.path import abspath as os_path_abspath
-from os import system as os_system
 from webbrowser import open as webbrowser_open
 from typing import TypedDict,List
-import csv
 
 class Store(TypedDict):
     """Define the Store info for foluim map marker
@@ -168,25 +164,6 @@ def create_map(store_list: List[Store]) -> folium.Map:
     fmap.location = compute_map_center(box=bBox, ndigits=5)
     return fmap
 
-def read_stores_from_csv_file(input_file_path:str) -> List[Store]:
-    """_summary_
-
-    Args:
-        input_file_path (str): _description_
-
-    Returns:
-        List[Store]: _description_
-    """
-    stores:List[Store] = []
-    with open(file=input_file_path, mode='r', encoding='utf-8',newline='') as csvfile:
-        fieldnames = ["行政區","店名","地址","電話","坐標(緯度)","坐標(經度)"]
-        csvReader = csv.DictReader(csvfile,fieldnames)
-        next(csvReader,None)
-        for row in csvReader:
-            s = Store(name=row["店名"],address=row["地址"],phone_number=row["電話"],lat=float(row["坐標(緯度)"]),lng=float(row["坐標(經度)"]))
-            stores.append(s)
-    return stores
-
 def write_foluim_map(map_path:str,stores:List[Store]):
     """Draw placemark(with type store) in foluim.Map
 
@@ -202,10 +179,8 @@ def write_foluim_map(map_path:str,stores:List[Store]):
 def example(input_file_path:str,output_folder:str):
     try:
         map_path:str = create_output_map_path(input_file_path,output_folder).as_posix()
-        print(f"new file name: <{map_path}>")
-        # --- 從檔案取出資料 ---
-        # stores:List[Store] = test_locations() # 產生範例
-        stores:List[Store] = read_stores_from_csv_file(input_file_path) # 讀取csv檔並存成指定的格式(store)
+        print(f"new map file name: <{map_path}>")
+        stores:List[Store] = test_locations() # 產生範例
         write_foluim_map(map_path,stores) # 利用 stores 建立地圖
     except Exception as e:
         print(e)

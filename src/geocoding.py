@@ -1,5 +1,12 @@
 '''
+## Describe
+
 負責將輸入的csv讀取轉換成準備輸出的格式
+
+## Usage
+
+呼叫`geocoding_csv_file()`即可
+
 '''
 import csv
 from typing import TypedDict,List,Dict

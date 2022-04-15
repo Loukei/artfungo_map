@@ -31,6 +31,7 @@
 import csv
 from pathlib import Path
 from decimal import Decimal
+from pyclbr import Function
 from typing import TypedDict,List,Dict
 from os import getenv as os_getenv
 from dotenv import load_dotenv # read api key from (.env) file 
@@ -75,15 +76,15 @@ def bing_address_geocoding(address:str,api_key:str) -> GeocodingResult:
         err_message = reply.status
     )
 
-def geocoding_source_file(input_file:str, api_key:str) -> List[Dict]:
-    results:List[GeocodingResult] = []
+def geocoding_csv_file(input_file:str, api_key:str,fieldnames:List,address_name:str) -> List[Dict]:
+    results:List[Dict] = []
     with open(file = input_file, mode = 'r', encoding = 'utf-8', newline = '') as input:
-        csvReader = csv.DictReader(input,fieldnames=["行政區","店名","地址","電話","坐標(緯度)","坐標(經度)"])
+        csvReader = csv.DictReader(input,fieldnames)
         next(csvReader,None) # skip header row
         for row in csvReader:
-            result:GeocodingResult = bing_address_geocoding(address = row["地址"],api_key=api_key)
+            result:GeocodingResult = bing_address_geocoding(address=row[address_name], api_key=api_key)
             results.append(result|row) # merge 2 dict
-            print(f"Process <{row['地址']}>.")
+            print(f"Process <{row[address_name]}>.")
     return results
 
 def write_csv_report(results: List[Dict], output_file:str) -> None:
@@ -102,7 +103,12 @@ def write_csv_report(results: List[Dict], output_file:str) -> None:
 
 def create_output_csv_file_path(output_folder:str,input_file_path:str) -> str:
     """Combine the user defined output folder and data source to create new output file.
-
+    
+    Ex:
+        ``` python
+        s = create_output_csv_file_path("C:\Documents\results","C:\Documents\Store.csv")
+        # 'C:\Documents\results\Result_Store.csv'
+        ```
     Args:
         output_folder (str): A folder path. ex: 'C:\Documents\results'
         input_file_path (str):A file path(csv), which include the house addresses. ex: "C:\Documents\Store.csv"
@@ -139,17 +145,21 @@ def get_APIKey_from_env()->str:
 def main(input_file:str,output_folder:str) -> None:
     try:
         bing_api_key = get_APIKey_from_env()
-        results:List[Dict] = geocoding_source_file(input_file,bing_api_key)
+        # results:List[Dict] = geocoding_source_file(input_file,bing_api_key)
+        # --- 修改讀檔的模式,盡量讓隨著檔案變化的部分保留在最外層 ---
+        fieldnames = ["行政區","店名","地址","電話","坐標(緯度)","坐標(經度)"]
+        results:List[Dict] = geocoding_csv_file(input_file=filepath, api_key=bing_api_key, fieldnames=fieldnames, address_name="地址")
+        
         output_csv_file:str = create_output_csv_file_path(output_folder,input_file)
         write_csv_report(results,output_csv_file)
         # --- 準備填入地圖的數據 ---
-        stores:List[Store] = []
-        for r in results:
-            s = Store(name=r["店名"],address=r["地址"],lat=float(r["坐標(緯度)"]),lng=float(r["坐標(經度)"]),phone_number=r["電話"])
-            stores.append(s)
+        # stores:List[Store] = []
+        # for r in results:
+        #     s = Store(name=r["店名"],address=r["地址"],lat=float(r["坐標(緯度)"]),lng=float(r["坐標(經度)"]),phone_number=r["電話"])
+        #     stores.append(s)
         # --- 繪製地圖並開檔 ---
-        map_path:str = create_output_map_path(input_file,output_folder)
-        write_foluim_map(map_path,stores)
+        # map_path:str = create_output_map_path(input_file,output_folder)
+        # write_foluim_map(map_path,stores)
         # --- TODO KML 處理 ---
     except Exception as e:
         print(e)
@@ -159,4 +169,10 @@ if __name__ == '__main__':
     filepath:str = "testdata\嘉義市書店地圖.csv"
     output_folder:str = "testdata\output"
     main(filepath,output_folder)
+    # ---
+    # bing_api_key = get_APIKey_from_env()
+    # fieldnames = ["行政區","店名","地址","電話","坐標(緯度)","坐標(經度)"]
+    # results = geocoding_csv_file(input_file=filepath, api_key=bing_api_key, fieldnames=fieldnames, address_name="地址")
+    # for row in results:
+    #     print(row)
     pass

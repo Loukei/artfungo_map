@@ -6,8 +6,8 @@
 1. 讀取店家CSV資料
 2. 將店家地址轉成經緯度儲存
 3. 使用經緯度資訊與店家資訊,產生HTML地圖
-4. (可選)輸出KML格式資料
-5. 開啟地圖
+4. 開啟地圖
+5. (可選)輸出KML格式資料
 
 ## Usage
 
@@ -26,7 +26,6 @@
     - 裝飾子能巢狀嗎?
 - 處理大型檔案時這種方式不適用
 - 用Decimal來存經緯度
-- 
 '''
 #!/usr/bin/python3
 import csv
@@ -151,7 +150,7 @@ def main(input_file:str,output_folder:str) -> None:
         # --- 繪製地圖並開檔 ---
         map_path:str = create_output_map_path(input_file,output_folder)
         write_foluim_map(map_path,stores)
-        # --- 
+        # --- TODO KML 處理 ---
     except Exception as e:
         print(e)
     pass
@@ -159,7 +158,5 @@ def main(input_file:str,output_folder:str) -> None:
 if __name__ == '__main__':
     filepath:str = "testdata\嘉義市書店地圖.csv"
     output_folder:str = "testdata\output"
-    # main(filepath,output_folder)
-    stores = test_locations()
-    write_foluim_map('testdata\output\map.html',stores)
+    main(filepath,output_folder)
     pass

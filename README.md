@@ -381,3 +381,4 @@ folium的存檔功能還是要上網才能看到地圖，無法完全離線使�
 
 
 - [開放政府- 嘉義市書店地圖](https://data.gov.tw/dataset/82835)
+- [KML繪製](https://simplekml.readthedocs.io/en/latest/gettingstarted.html#quick-example)

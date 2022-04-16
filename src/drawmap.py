@@ -42,6 +42,15 @@ def test_locations():
         ]
     return r
 
+def test_markers() -> List[folium.Marker]:
+    r = [
+        folium.Marker(location = [23.4718747,120.4607824],popup = "嘉義市東區體育路29號",tooltip = "大人物書店"),
+        folium.Marker(location = [23.4779863,120.4573471],popup = "嘉義市東區和平路227號",tooltip = "三福書城"),
+        folium.Marker(location = [23.4624972,120.4532138],popup = "嘉義市東區大業街97號",tooltip = "天才書局"),
+        folium.Marker(location = [23.476856,120.4594929],popup = "嘉義市東區民族路90號",tooltip = "金冠文化廣場"),
+    ]
+    return r
+
 def create_output_map_path(input_file_path:str,output_folder:str) -> str:
     """將輸出路徑與輸入檔案結合產生預計要輸出的檔案名稱
 
@@ -164,6 +173,25 @@ def create_map(store_list: List[Store]) -> folium.Map:
     fmap.location = compute_map_center(box=bBox, ndigits=5)
     return fmap
 
+def create_map_v2(markers: List[folium.Marker]) -> folium.Map:
+    # --- 初始化地圖資料 ---
+    map_center = [23.476856,120.4594929] # 嘉義火車站(暫時的地圖中心點)
+    bBox = [(90.0,180.0),(-90.0,-180.0)] # 整個地圖的地標範圍
+    fmap:folium.Map = folium.Map(location=map_center, zoom_start=16, tiles="OpenStreetMap")
+    # --- 讀取地圖資料 ---
+    marker:folium.Marker
+    for marker in markers:
+        location = marker.location
+        if(check_geocode(location[0],location[1])):
+            bBox = compute_map_bBox(box=bBox,latlng=location)
+            marker.add_to(fmap)
+        else:
+            print(f'[ERROR]Store {marker} is not a legal geocode.')
+    # --- 將地圖重新套用bBox與地圖中心點 ---
+    fmap.fit_bounds(bounds=bBox)
+    fmap.location = compute_map_center(box=bBox, ndigits=5)
+    return fmap
+
 def write_foluim_map(map_path:str,stores:List[Store]):
     """Draw placemark(with type store) in foluim.Map
 
@@ -176,12 +204,29 @@ def write_foluim_map(map_path:str,stores:List[Store]):
     open_file_on_browser(map_path)
     pass
 
+def write_foluim_map_v2(map_path:str,markers:List[folium.Marker]):
+    fmap:folium.Map = create_map_v2(markers)
+    fmap.save(map_path)
+    open_file_on_browser(map_path)
+    pass
+
 def example(input_file_path:str,output_folder:str):
     try:
-        map_path:str = create_output_map_path(input_file_path,output_folder).as_posix()
+        map_path:str = create_output_map_path(input_file_path,output_folder)
         print(f"new map file name: <{map_path}>")
         stores:List[Store] = test_locations() # 產生範例
         write_foluim_map(map_path,stores) # 利用 stores 建立地圖
     except Exception as e:
         print(e)
+    pass
+
+if __name__ == "__main__":
+    filepath:str = "testdata\嘉義市書店地圖.csv"
+    output_folder:str = "testdata\output"
+    # example(filepath,output_folder)
+    map_path = "testmap.html"
+    markers:List[folium.Marker] = test_markers()
+    fmap:folium.Map = create_map_v2(markers)
+    fmap.save(map_path)
+    open_file_on_browser(map_path)
     pass

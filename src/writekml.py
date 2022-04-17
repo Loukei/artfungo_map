@@ -29,8 +29,18 @@ kml 模組
 
 """
 import simplekml
+from typing import List
+import placemark
+
+def create_kml(points:List[placemark.PlaceMark]) -> simplekml.kml.kml:
+    kml:simplekml.kml.kml = simplekml.Kml()
+    p:placemark.PlaceMark
+    for p in points:
+        kml.newpoint(name= p["name"], description = p["describe"], coords=[(p["lat"],p["lng"])])
+    return kml
 
 if __name__ == "__main__":
-    kml = simplekml.Kml()
-    kml.newpoint(name="Kirstenbosch", coords=[(18.432314,-33.988862)])  # lon, lat, optional height
+    kml:simplekml.kml.kml = simplekml.Kml()
+    # kml.newpoint(name="Kirstenbosch", description = "{house_address},{phone_number}", coords=[(18.432314,-33.988862)])  # lon, lat, optional height
+    kml.newpoint()
     kml.save("botanicalgarden.kml")

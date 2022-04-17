@@ -16,7 +16,7 @@
     - csv檔案第一列必須註明資料欄位名稱,欄位名稱不要與`drawmap.Store`的欄位同名
     - 修改`fieldnames = ["行政區","店名","地址","電話","坐標(緯度)","坐標(經度)"]`
     - 修改`address_name`,指向你的地址欄位名稱如"地址"
-- 撰寫一個函數將csv欄位轉成folium.Marker
+- 撰寫一個函數將csv欄位轉成folium.Marker,如`convert_geocoding_results_to_markers()`
 
 ## Note
 
@@ -25,24 +25,36 @@
 - 只會回傳經緯度數值,不會有錯誤訊息與比對結果
 
 ## TODO
-- 刪除舊的write_foluim_map函數
-
-- 利用裝飾子模式修整輸入與輸出流程
-    - 裝飾子能巢狀嗎?
 - 處理大型檔案時這種方式不適用
-- 用Decimal來存經緯度
 '''
+
 #!/usr/bin/python3
 import csv
 from pathlib import Path
 from typing import List,Dict
 from os import getenv as os_getenv
-from dotenv import load_dotenv
-import folium # read api key from (.env) file 
-from drawmap import create_output_map_path,test_markers,write_foluim_map_v2
+from dotenv import load_dotenv # read api key from (.env) file 
+import folium 
+import placemark
+import drawmap
 import geocoding
 
-def write_csv_report(results: List[Dict], output_file:str) -> None:
+def convert_geocoding_results_to_markers(results:List[Dict]) -> List[folium.Marker]:
+    """Turn the geocoding {results} to a List of foluim.Marker
+
+    Args:
+        results (List[Dict]): the geocoding results from csv source, ex: 
+
+    Returns:
+        List[folium.Marker]: a list of Marker ready to lodding in the
+    """
+    markers:List[folium.Marker] = []
+    for r in results:
+        marker:folium.Marker = folium.Marker(location=[r["坐標(緯度)"],r["坐標(經度)"]],popup=r["地址"],tooltip=r["店名"])
+        markers.append(marker)
+    return markers
+
+def write_csv_report(output_file:str,results: List[Dict]) -> None:
     """將轉換過的資料(results),寫入目標的csv檔(output_file)
 
     Args:
@@ -103,19 +115,15 @@ def main(input_file:str,output_folder:str) -> None:
         fieldnames = ["行政區","店名","地址","電話","坐標(緯度)","坐標(經度)"]
         results:List[Dict] = geocoding.geocoding_csv_file(input_file=filepath, api_key=bing_api_key, fieldnames=fieldnames, address_name="地址")
         # --- 寫入一個csv檔 ---
-        # output_csv_file:str = create_output_csv_file_path(output_folder,input_file)
-        # write_csv_report(results,output_csv_file)
+        output_csv_file:str = create_output_csv_file_path(output_folder,input_file)
+        write_csv_report(output_csv_file,results)
         # --- 準備填入地圖的數據 ---
-            # markers:List[folium.Marker] = []
-            # for r in results:
-            #     marker:folium.Marker = folium.Marker(location=[r["坐標(緯度)"],r["坐標(經度)"]],popup=r["地址"],tooltip=r["店名"])
-            #     markers.append(marker)
-        markers:List[folium.Marker] = test_markers()
+        markers:List[folium.Marker] = convert_geocoding_results_to_markers(results)
         # --- 繪製地圖並開檔 ---
-        map_path:str = create_output_map_path(input_file,output_folder)
-        # write_foluim_map(map_path,stores)
-        write_foluim_map_v2(map_path,markers)
-        # --- TODO KML 處理 ---
+        map_path:str = drawmap.create_output_map_path(input_file,output_folder)
+        drawmap.draw_foluim_map(map_path,markers)
+        # --- TODO 輸出KML ---
+        
     except Exception as e:
         print(e)
     pass

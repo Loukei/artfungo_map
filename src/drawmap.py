@@ -14,7 +14,7 @@ from pathlib import Path
 from datetime import datetime,timezone
 from os.path import abspath as os_path_abspath
 from webbrowser import open as webbrowser_open
-from typing import TypedDict,List
+from typing import List,Dict
 
 def test_markers() -> List[folium.Marker]:
     r = [
@@ -103,7 +103,7 @@ def open_file_on_browser(output_file_path:str) -> None:
     webbrowser_open(abs_path)
     pass
 
-def create_map_v2(markers: List[folium.Marker]) -> folium.Map:
+def create_map(markers: List[folium.Marker]) -> folium.Map:
     # --- 初始化地圖資料 ---
     map_center = [23.476856,120.4594929] # 嘉義火車站(暫時的地圖中心點)
     bBox = [(90.0,180.0),(-90.0,-180.0)] # 整個地圖的地標範圍
@@ -122,18 +122,29 @@ def create_map_v2(markers: List[folium.Marker]) -> folium.Map:
     fmap.location = compute_map_center(box=bBox, ndigits=5)
     return fmap
 
-def write_foluim_map_v2(map_path:str,markers:List[folium.Marker]):
-    fmap:folium.Map = create_map_v2(markers)
+def draw_foluim_map(map_path:str,markers:List[folium.Marker]):
+    """Draw a map from a dict
+
+    Args:
+        map_path (str): _description_
+        markers (List[folium.Marker]): _description_
+    """
+    fmap:folium.Map = create_map(markers)
     fmap.save(map_path)
     open_file_on_browser(map_path)
     pass
+
+# def draw_foluim_map(map_path:str,results:List[Dict]):
+#     markers:List[folium.Marker] = [folium.Marker(location=r["location"],tooltip=r["describe"],popup=r["name"]) for r in results]
+#     draw_foluim_map(map_path = map_path,markers = markers)
+#     pass
 
 def example(input_file_path:str,output_folder:str):
     try:
         map_path:str = create_output_map_path(input_file_path,output_folder)
         print(f"new map file name: <{map_path}>")
         markers:List[folium.Marker] = test_markers() # 產生範例
-        write_foluim_map_v2(map_path,markers) # 利用 stores 建立地圖
+        draw_foluim_map(map_path,markers) # 利用 stores 建立地圖
     except Exception as e:
         print(e)
     pass

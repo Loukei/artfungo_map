@@ -25,8 +25,7 @@
 - 只會回傳經緯度數值,不會有錯誤訊息與比對結果
 
 ## TODO
-- 直接要求使用者傳入foluim.marker
-    - compute_map_bBox(),compute_map_center() 直接處理foluim.marker
+- 刪除舊的write_foluim_map函數
 
 - 利用裝飾子模式修整輸入與輸出流程
     - 裝飾子能巢狀嗎?
@@ -35,14 +34,12 @@
 '''
 #!/usr/bin/python3
 import csv
-from dataclasses import dataclass
 from pathlib import Path
 from typing import List,Dict
 from os import getenv as os_getenv
-from unicodedata import name
 from dotenv import load_dotenv
 import folium # read api key from (.env) file 
-from drawmap import Store,write_foluim_map,create_output_map_path,test_locations,test_markers,write_foluim_map_v2
+from drawmap import create_output_map_path,test_markers,write_foluim_map_v2
 import geocoding
 
 def write_csv_report(results: List[Dict], output_file:str) -> None:
@@ -109,10 +106,11 @@ def main(input_file:str,output_folder:str) -> None:
         # output_csv_file:str = create_output_csv_file_path(output_folder,input_file)
         # write_csv_report(results,output_csv_file)
         # --- 準備填入地圖的數據 ---
-        markers:List[folium.Marker] = []
-        for r in results:
-            marker:folium.Marker = folium.Marker(location=[r["坐標(緯度)"],r["坐標(經度)"]],popup=r["地址"],tooltip=r["店名"])
-            markers.append(marker)
+            # markers:List[folium.Marker] = []
+            # for r in results:
+            #     marker:folium.Marker = folium.Marker(location=[r["坐標(緯度)"],r["坐標(經度)"]],popup=r["地址"],tooltip=r["店名"])
+            #     markers.append(marker)
+        markers:List[folium.Marker] = test_markers()
         # --- 繪製地圖並開檔 ---
         map_path:str = create_output_map_path(input_file,output_folder)
         # write_foluim_map(map_path,stores)

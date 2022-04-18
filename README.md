@@ -28,6 +28,7 @@ BINGMAP_API_KEY = "YOUR_KEY"
 ```
 
 3. 下載`selenium`的[chrome webdriver](https://sites.google.com/a/chromium.org/chromedriver/downloads)，注意版本與你的chrome瀏覽器對應，將`chromedriver.exe`放在專案資料夾
+   1. 可以利用[Webdriver Manager for Python](https://github.com/SergeyPirogov/webdriver_manager)來管理webdriver
 
 4. 執行`craeler.py`爬取藝fun卷資料，會將檔案存成`data.csv`
 

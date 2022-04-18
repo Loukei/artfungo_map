@@ -1,20 +1,26 @@
 '''
-input: 從儲存的CSV檔案讀取店家資訊
-output: 輸出Foulium地圖
+## Describe
 
-## TODO
-- 使用一個類別(Store)來處理資料
-    - 該類別可以讀取CSV檔中的資料
-    - 驗證經緯度轉換是否成功
-    - 輸出符合folium Marker格式的資料
+給定List[folium.Marker],計算地圖中心點等等,輸出Foulium地圖,並且打開瀏覽器確認
+- folium.Marker為foluim的地理標記類別
+
+## Example
+
+```
+markers:List[folium.Marker] = test_markers() # default test markers
+draw_foluim_map('map.html',markers)
+```
+
+## Reference
+
+- [foluim - Markers](https://python-visualization.github.io/folium/quickstart.html#Markers)
+
 '''
 
 import folium
-from pathlib import Path
-from datetime import datetime,timezone
 from os.path import abspath as os_path_abspath
 from webbrowser import open as webbrowser_open
-from typing import List,Dict
+from typing import List
 
 def test_markers() -> List[folium.Marker]:
     r = [
@@ -24,32 +30,6 @@ def test_markers() -> List[folium.Marker]:
         folium.Marker(location = [23.476856,120.4594929],popup = "嘉義市東區民族路90號",tooltip = "金冠文化廣場"),
     ]
     return r
-
-def create_output_map_path(input_file_path:str,output_folder:str) -> str:
-    """將輸出路徑與輸入檔案結合產生預計要輸出的檔案名稱
-
-    Args:
-        input_file_path (str): _description_
-        output_folder (str): _description_
-
-    Raises:
-        ValueError: _description_
-        ValueError: _description_
-        ValueError: _description_
-
-    Returns:
-        Path: _description_
-    """
-    input_file_P = Path(input_file_path)
-    output_folder_P = Path(output_folder)
-    if(not input_file_P.is_file()):
-        raise ValueError(f"Input file <{input_file_path}> is not a file.")
-    if(not input_file_P.suffix == ".csv"):
-        raise ValueError(f'Input file <{input_file_path}> is not a csv file')
-    if(not output_folder_P.is_dir()):
-        raise ValueError(f'Output folder <{output_folder}> is not a folder.')
-    timestamp:str = datetime.strftime(datetime.now(tz=timezone.utc),"[%Y%m%d%z_%H'%M'%S]") # ex: "[20220412+0000_03'55'31]"
-    return output_folder_P.joinpath(timestamp + input_file_P.stem).with_suffix('.html').as_posix()
 
 def compute_map_bBox(box:list,latlng:List) -> list:
     "計算地圖的範圍,回傳新的bounding box [(-90.0,-180.0),(90.0,180.0)]"
@@ -78,14 +58,14 @@ def compute_map_center(box:list,ndigits: int)  -> tuple:
     return (lat,lng)
 
 def check_geocode(lat:float, lng: float) -> bool:
-    """ 檢查經度(lng)與緯度(lat)數字
+    """ 檢查經度(lng)與緯度(lat)的數字
 
     Args:
         lat (float): 緯度 -90.0 ~ 90.0
         lng (float): 經度 -180.0 ~ 180.0
 
     Returns:
-        bool: _description_
+        bool: 檢查正確回傳True,失敗回傳False
     """
     if(type(lat) is float and type(lng) is float):
         return (lat <= 90.0 and lat >= -90.0) and (lng <= 180.0 and lng >= -180.0)
@@ -134,17 +114,10 @@ def draw_foluim_map(map_path:str,markers:List[folium.Marker]):
     open_file_on_browser(map_path)
     pass
 
-# def draw_foluim_map(map_path:str,results:List[Dict]):
-#     markers:List[folium.Marker] = [folium.Marker(location=r["location"],tooltip=r["describe"],popup=r["name"]) for r in results]
-#     draw_foluim_map(map_path = map_path,markers = markers)
-#     pass
-
 def example(input_file_path:str,output_folder:str):
     try:
-        map_path:str = create_output_map_path(input_file_path,output_folder)
-        print(f"new map file name: <{map_path}>")
         markers:List[folium.Marker] = test_markers() # 產生範例
-        draw_foluim_map(map_path,markers) # 利用 stores 建立地圖
+        draw_foluim_map("testmap.html",markers) # 利用 markers 建立地圖
     except Exception as e:
         print(e)
     pass

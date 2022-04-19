@@ -6,8 +6,8 @@
 
 ## Example
 
-```
-markers:List[folium.Marker] = test_markers() # default test markers
+``` Python
+markers:List[folium.Marker] = test_markers() # default test data markers
 draw_foluim_map('map.html',markers)
 ```
 
@@ -84,8 +84,16 @@ def open_file_on_browser(output_file_path:str) -> None:
     pass
 
 def create_map(markers: List[folium.Marker]) -> folium.Map:
+    """Read the List of Marker {markers}, fill the data to map
+
+    Args:
+        markers (List[folium.Marker]): the List of Marker
+
+    Returns:
+        folium.Map: The map ready to save or edit.
+    """
     # --- 初始化地圖資料 ---
-    map_center = [23.476856,120.4594929] # 嘉義火車站(暫時的地圖中心點)
+    map_center = [23.476856,120.4594929] # 地圖中心點(嘉義火車站)
     bBox = [(90.0,180.0),(-90.0,-180.0)] # 整個地圖的地標範圍
     fmap:folium.Map = folium.Map(location=map_center, zoom_start=16, tiles="OpenStreetMap")
     # --- 讀取地圖資料 ---
@@ -114,16 +122,7 @@ def draw_foluim_map(map_path:str,markers:List[folium.Marker]):
     open_file_on_browser(map_path)
     pass
 
-def example(input_file_path:str,output_folder:str):
-    try:
-        markers:List[folium.Marker] = test_markers() # 產生範例
-        draw_foluim_map("testmap.html",markers) # 利用 markers 建立地圖
-    except Exception as e:
-        print(e)
-    pass
-
 if __name__ == "__main__":
-    filepath:str = "testdata\嘉義市書店地圖.csv"
-    output_folder:str = "testdata\output"
-    example(filepath,output_folder)
+    markers:List[folium.Marker] = test_markers() # 產生範例
+    draw_foluim_map("testmap.html",markers) # 利用 markers 建立地圖
     pass

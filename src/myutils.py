@@ -5,7 +5,6 @@ from pathlib import Path
 from typing import Dict,List
 import csv
 from datetime import datetime,timezone
-import folium
 
 def read_stores(input_file:str,fieldnames:List) -> List[Dict]:
     "以預定的{fieldnames}欄位來讀取csv檔,因此欄位名稱必須與檔案內容第一行一致"

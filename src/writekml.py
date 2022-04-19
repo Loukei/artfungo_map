@@ -40,3 +40,8 @@ def create_kml(points:List[PlaceMark]):
     for p in points:
         kml.newpoint(name= p["name"], description = p["describe"], coords=[(p["lng"],p["lat"])])
     return kml
+
+if __name__ == "__main__":
+    kml = simplekml.Kml()
+    kml.newpoint(name="Kirstenbosch", coords=[(18.432314,-33.988862)])  # lon, lat, optional height
+    kml.save("botanicalgarden.kml")

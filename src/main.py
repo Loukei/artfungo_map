@@ -15,6 +15,7 @@
 - 針對你的CSV檔格式
     - csv檔案第一列必須註明資料欄位名稱
     - 修改`fieldnames = ["行政區","店名","地址","電話","坐標(緯度)","坐標(經度)"]`以符合你的欄位名稱
+    - `geocoding.bing_address_geocoding()`函數裡必須填入正確的地址,如`store["地址"]`或`store["addresss"]`,同上一步的`fieldnames`
     - 撰寫一個函數`convert_geocoding_result_to_palcemark()`
         - 將輸出的報告`results`轉換成`writekml.PlaceMark`,紀錄(經度,緯度,店名,詳細資訊)
 
@@ -25,8 +26,9 @@
 - 只會回傳經緯度數值,不會有錯誤訊息與比對結果
 - 處理大型檔案時這種方式不適用
 
-為何要輸出csv報告
-- Geocoding的部分涉及了語意分析,你可以輸入一個明顯錯誤的地址,但卻得到"OK",這部分可能需要人工判讀
+為何要輸出csv報告?
+- Geocoding的部分涉及了語意分析,這部分可能需要人工判讀
+    - ex:你可以輸入一個明顯錯誤的地址如"中土大陸",得到"Zhongke Bridge, Daya District, Taichung City 42881"
 '''
 
 #!/usr/bin/python3

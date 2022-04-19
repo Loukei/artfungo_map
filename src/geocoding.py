@@ -1,11 +1,11 @@
 '''
 ## Describe
 
-將地址轉經緯度的部分包起來,以後要修改時只需改動這裡
+將地址轉經緯度的部分包起來,以後要修改時(比如改用Google map)只需改動這裡
 
 ## Usage
 
-呼叫`geocoding_csv_file()`即可
+呼叫`geocoding_csv_file()`即可,會回傳一個字典{GeocodingResult}
 
 '''
 from typing import TypedDict

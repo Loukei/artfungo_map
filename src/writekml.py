@@ -8,8 +8,6 @@
 - description: 說明文字
 - Point: 經緯度
 
-https://simplekml.readthedocs.io/en/latest/geometries.html#simplekml.Point
-
 ## Example
 
 ``` Python

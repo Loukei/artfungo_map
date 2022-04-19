@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<head>    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_5d8db56ddc844efdb8a4f76c6cc63c46 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+            </style>
+        
+</head>
+<body>    
+    
+            <div class="folium-map" id="map_5d8db56ddc844efdb8a4f76c6cc63c46" ></div>
+        
+</body>
+<script>    
+    
+            var map_5d8db56ddc844efdb8a4f76c6cc63c46 = L.map(
+                "map_5d8db56ddc844efdb8a4f76c6cc63c46",
+                {
+                    center: [0.01907, 0.02262],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 16,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_0d0cd091d98b43fd844547d687d2f3ce = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_5d8db56ddc844efdb8a4f76c6cc63c46);
+        
+    
+            var marker_a510c24a7c9341749ae392c4f8695de6 = L.marker(
+                [23.47184, 120.46086],
+                {}
+            ).addTo(map_5d8db56ddc844efdb8a4f76c6cc63c46);
+        
+    
+        var popup_92e27fa8ba7f486294a4878e9b27f8f0 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_e07acf078e1b4673b3d1694388353a0c = $(`<div id="html_e07acf078e1b4673b3d1694388353a0c" style="width: 100.0%; height: 100.0%;">Name: 大人物書店, Address: 嘉義市東區體育路29號, Phone_number: 05-2282648</div>`)[0];
+            popup_92e27fa8ba7f486294a4878e9b27f8f0.setContent(html_e07acf078e1b4673b3d1694388353a0c);
+        
+
+        marker_a510c24a7c9341749ae392c4f8695de6.bindPopup(popup_92e27fa8ba7f486294a4878e9b27f8f0)
+        ;
+
+        
+    
+    
+            marker_a510c24a7c9341749ae392c4f8695de6.bindTooltip(
+                `<div>
+                     大人物書店
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c2244652bf4143e8b83b893c251919fa = L.marker(
+                [23.47789, 120.45734],
+                {}
+            ).addTo(map_5d8db56ddc844efdb8a4f76c6cc63c46);
+        
+    
+        var popup_565a791984b84a388dc26a288e054131 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_7b32c32a03c0434aa33f669a3bb1c53a = $(`<div id="html_7b32c32a03c0434aa33f669a3bb1c53a" style="width: 100.0%; height: 100.0%;">Name: 三福書城, Address: 嘉義市東區和平路227號, Phone_number: 05-2280377</div>`)[0];
+            popup_565a791984b84a388dc26a288e054131.setContent(html_7b32c32a03c0434aa33f669a3bb1c53a);
+        
+
+        marker_c2244652bf4143e8b83b893c251919fa.bindPopup(popup_565a791984b84a388dc26a288e054131)
+        ;
+
+        
+    
+    
+            marker_c2244652bf4143e8b83b893c251919fa.bindTooltip(
+                `<div>
+                     三福書城
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_9b1b522a3a6f44e7a98680c11482d204 = L.marker(
+                [23.46247, 120.45318],
+                {}
+            ).addTo(map_5d8db56ddc844efdb8a4f76c6cc63c46);
+        
+    
+        var popup_b8dc0925c98c47139968f0c376e8f9ff = L.popup({"maxWidth": "100%"});
+
+        
+            var html_228025c76ee44c989febf218e054e4fb = $(`<div id="html_228025c76ee44c989febf218e054e4fb" style="width: 100.0%; height: 100.0%;">Name: 天才書局, Address: 嘉義市東區大業街97號, Phone_number: 05-2289560</div>`)[0];
+            popup_b8dc0925c98c47139968f0c376e8f9ff.setContent(html_228025c76ee44c989febf218e054e4fb);
+        
+
+        marker_9b1b522a3a6f44e7a98680c11482d204.bindPopup(popup_b8dc0925c98c47139968f0c376e8f9ff)
+        ;
+
+        
+    
+    
+            marker_9b1b522a3a6f44e7a98680c11482d204.bindTooltip(
+                `<div>
+                     天才書局
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_d1bd79df3593411daab414f651e65022 = L.marker(
+                [23.47698, 120.4596],
+                {}
+            ).addTo(map_5d8db56ddc844efdb8a4f76c6cc63c46);
+        
+    
+        var popup_9b4860369272401e836928dded906eab = L.popup({"maxWidth": "100%"});
+
+        
+            var html_e47f4cc599db4af39d3c7620cee7be0a = $(`<div id="html_e47f4cc599db4af39d3c7620cee7be0a" style="width: 100.0%; height: 100.0%;">Name: 金冠文化廣場, Address: 嘉義市東區民族路90號, Phone_number: 05-2711669</div>`)[0];
+            popup_9b4860369272401e836928dded906eab.setContent(html_e47f4cc599db4af39d3c7620cee7be0a);
+        
+
+        marker_d1bd79df3593411daab414f651e65022.bindPopup(popup_9b4860369272401e836928dded906eab)
+        ;
+
+        
+    
+    
+            marker_d1bd79df3593411daab414f651e65022.bindTooltip(
+                `<div>
+                     金冠文化廣場
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_94967d43240f4a658893aad97b7f9f88 = L.marker(
+                [23.49197, 120.45208],
+                {}
+            ).addTo(map_5d8db56ddc844efdb8a4f76c6cc63c46);
+        
+    
+        var popup_39b8f896743a49ee97961feae81ce32d = L.popup({"maxWidth": "100%"});
+
+        
+            var html_ad9ede90c5f14f7fa6d8bcfd9837b909 = $(`<div id="html_ad9ede90c5f14f7fa6d8bcfd9837b909" style="width: 100.0%; height: 100.0%;">Name: 金石堂書店, Address: 嘉義市東區忠孝路600號4樓, Phone_number: 05-2773490</div>`)[0];
+            popup_39b8f896743a49ee97961feae81ce32d.setContent(html_ad9ede90c5f14f7fa6d8bcfd9837b909);
+        
+
+        marker_94967d43240f4a658893aad97b7f9f88.bindPopup(popup_39b8f896743a49ee97961feae81ce32d)
+        ;
+
+        
+    
+    
+            marker_94967d43240f4a658893aad97b7f9f88.bindTooltip(
+                `<div>
+                     金石堂書店
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_139c2e75cf454effbc27e5e61323a1c5 = L.marker(
+                [23.48413, 120.4542],
+                {}
+            ).addTo(map_5d8db56ddc844efdb8a4f76c6cc63c46);
+        
+    
+        var popup_fa48ac709f0c4350bcb54f92ca2f1f71 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_6f342dd3e38e45309771f92810ba1133 = $(`<div id="html_6f342dd3e38e45309771f92810ba1133" style="width: 100.0%; height: 100.0%;">Name: 洪雅書房, Address: 嘉義市東區長榮街116號, Phone_number: 05-2776540</div>`)[0];
+            popup_fa48ac709f0c4350bcb54f92ca2f1f71.setContent(html_6f342dd3e38e45309771f92810ba1133);
+        
+
+        marker_139c2e75cf454effbc27e5e61323a1c5.bindPopup(popup_fa48ac709f0c4350bcb54f92ca2f1f71)
+        ;
+
+        
+    
+    
+            marker_139c2e75cf454effbc27e5e61323a1c5.bindTooltip(
+                `<div>
+                     洪雅書房
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_8cd9dd7173d942df8567ec03e39c0513 = L.marker(
+                [23.48109, 120.45265],
+                {}
+            ).addTo(map_5d8db56ddc844efdb8a4f76c6cc63c46);
+        
+    
+        var popup_35069e7eb8294b3d9a67c15c41ee7e68 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_2b038a13982746dc9d9a4a9bbe53b25f = $(`<div id="html_2b038a13982746dc9d9a4a9bbe53b25f" style="width: 100.0%; height: 100.0%;">Name: 承億小鎮慢讀, Address: 嘉義市東區中山路203號, Phone_number: 05-2246000</div>`)[0];
+            popup_35069e7eb8294b3d9a67c15c41ee7e68.setContent(html_2b038a13982746dc9d9a4a9bbe53b25f);
+        
+
+        marker_8cd9dd7173d942df8567ec03e39c0513.bindPopup(popup_35069e7eb8294b3d9a67c15c41ee7e68)
+        ;
+
+        
+    
+    
+            marker_8cd9dd7173d942df8567ec03e39c0513.bindTooltip(
+                `<div>
+                     承億小鎮慢讀
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_a73d9eb3f8d449f4955955da0d4a5b23 = L.marker(
+                [23.47874, 120.46302],
+                {}
+            ).addTo(map_5d8db56ddc844efdb8a4f76c6cc63c46);
+        
+    
+        var popup_d31ac4966ca648c2a6d7b1ad909f543b = L.popup({"maxWidth": "100%"});
+
+        
+            var html_5c0086b3a69a45aba935e6d80d7ee70c = $(`<div id="html_5c0086b3a69a45aba935e6d80d7ee70c" style="width: 100.0%; height: 100.0%;">Name: 勇氣書房, Address: 嘉義市東區啟明路136號, Phone_number: 05-2773357</div>`)[0];
+            popup_d31ac4966ca648c2a6d7b1ad909f543b.setContent(html_5c0086b3a69a45aba935e6d80d7ee70c);
+        
+
+        marker_a73d9eb3f8d449f4955955da0d4a5b23.bindPopup(popup_d31ac4966ca648c2a6d7b1ad909f543b)
+        ;
+
+        
+    
+    
+            marker_a73d9eb3f8d449f4955955da0d4a5b23.bindTooltip(
+                `<div>
+                     勇氣書房
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_3024edb5b5314e10a58f616ef11e9c1f = L.marker(
+                [23.49927, 120.45147],
+                {}
+            ).addTo(map_5d8db56ddc844efdb8a4f76c6cc63c46);
+        
+    
+        var popup_36c4b90f27bb48c8bd88e14e059a0cbb = L.popup({"maxWidth": "100%"});
+
+        
+            var html_ac17db0ba06a49948e4d0f3259b44b55 = $(`<div id="html_ac17db0ba06a49948e4d0f3259b44b55" style="width: 100.0%; height: 100.0%;">Name: 書田二手書店, Address: 嘉義市東區忠孝路570-1號, Phone_number: 0915-772518</div>`)[0];
+            popup_36c4b90f27bb48c8bd88e14e059a0cbb.setContent(html_ac17db0ba06a49948e4d0f3259b44b55);
+        
+
+        marker_3024edb5b5314e10a58f616ef11e9c1f.bindPopup(popup_36c4b90f27bb48c8bd88e14e059a0cbb)
+        ;
+
+        
+    
+    
+            marker_3024edb5b5314e10a58f616ef11e9c1f.bindTooltip(
+                `<div>
+                     書田二手書店
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_d8c69d90b17e4813b9ea3d9fae234c9d = L.marker(
+                [23.48046, 120.45128],
+                {}
+            ).addTo(map_5d8db56ddc844efdb8a4f76c6cc63c46);
+        
+    
+        var popup_5afedfaec81c4de5a0575606cac0cf61 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_5c82d4bb0456407ea9e6e85841eec045 = $(`<div id="html_5c82d4bb0456407ea9e6e85841eec045" style="width: 100.0%; height: 100.0%;">Name: 臺灣圖書室, Address: 嘉義市東區中山路255號, Phone_number: 05-2228831</div>`)[0];
+            popup_5afedfaec81c4de5a0575606cac0cf61.setContent(html_5c82d4bb0456407ea9e6e85841eec045);
+        
+
+        marker_d8c69d90b17e4813b9ea3d9fae234c9d.bindPopup(popup_5afedfaec81c4de5a0575606cac0cf61)
+        ;
+
+        
+    
+    
+            marker_d8c69d90b17e4813b9ea3d9fae234c9d.bindTooltip(
+                `<div>
+                     臺灣圖書室
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_2a506b76ab6e4a8bb6fc1d5d2e453967 = L.marker(
+                [23.49847, 120.45435],
+                {}
+            ).addTo(map_5d8db56ddc844efdb8a4f76c6cc63c46);
+        
+    
+        var popup_70d5b7bc1c354cdf96db5525a1d3d432 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_a8df61abb90840d5aae4a6d9185bf3d5 = $(`<div id="html_a8df61abb90840d5aae4a6d9185bf3d5" style="width: 100.0%; height: 100.0%;">Name: 聯成書局, Address: 嘉義市東區義教街688號, Phone_number: 05-2769961</div>`)[0];
+            popup_70d5b7bc1c354cdf96db5525a1d3d432.setContent(html_a8df61abb90840d5aae4a6d9185bf3d5);
+        
+
+        marker_2a506b76ab6e4a8bb6fc1d5d2e453967.bindPopup(popup_70d5b7bc1c354cdf96db5525a1d3d432)
+        ;
+
+        
+    
+    
+            marker_2a506b76ab6e4a8bb6fc1d5d2e453967.bindTooltip(
+                `<div>
+                     聯成書局
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_099b73de39744834942f2ea8a6cecf6a = L.marker(
+                [23.48199, 120.45848],
+                {}
+            ).addTo(map_5d8db56ddc844efdb8a4f76c6cc63c46);
+        
+    
+        var popup_00dfc4b8169143898bc0a1fd94c08300 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_ee696cead6ac439cbeeb4a6927eb36f0 = $(`<div id="html_ee696cead6ac439cbeeb4a6927eb36f0" style="width: 100.0%; height: 100.0%;">Name: 龍瀚書局, Address: 嘉義市東區中山路77號, Phone_number: 05-2788890</div>`)[0];
+            popup_00dfc4b8169143898bc0a1fd94c08300.setContent(html_ee696cead6ac439cbeeb4a6927eb36f0);
+        
+
+        marker_099b73de39744834942f2ea8a6cecf6a.bindPopup(popup_00dfc4b8169143898bc0a1fd94c08300)
+        ;
+
+        
+    
+    
+            marker_099b73de39744834942f2ea8a6cecf6a.bindTooltip(
+                `<div>
+                     龍瀚書局
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_24230929bcca41a39775e4d6eebb60fd = L.marker(
+                [23.49235, 120.41779],
+                {}
+            ).addTo(map_5d8db56ddc844efdb8a4f76c6cc63c46);
+        
+    
+        var popup_ad77fe6a64524e12ade43439bfcaa7f0 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_e724650d7931466ba3eb08fac86546f2 = $(`<div id="html_e724650d7931466ba3eb08fac86546f2" style="width: 100.0%; height: 100.0%;">Name: 米琦書局, Address: 嘉義市西區北社尾路47號, Phone_number: 05-2382045</div>`)[0];
+            popup_ad77fe6a64524e12ade43439bfcaa7f0.setContent(html_e724650d7931466ba3eb08fac86546f2);
+        
+
+        marker_24230929bcca41a39775e4d6eebb60fd.bindPopup(popup_ad77fe6a64524e12ade43439bfcaa7f0)
+        ;
+
+        
+    
+    
+            marker_24230929bcca41a39775e4d6eebb60fd.bindTooltip(
+                `<div>
+                     米琦書局
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_df0894e431e04727875f36ba5cb77c48 = L.marker(
+                [23.47406, 120.44916],
+                {}
+            ).addTo(map_5d8db56ddc844efdb8a4f76c6cc63c46);
+        
+    
+        var popup_4bf95effbaaf4d31a7e4bee6a6a8c042 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_93f1ed6c37b24d618e9cef36be8e7522 = $(`<div id="html_93f1ed6c37b24d618e9cef36be8e7522" style="width: 100.0%; height: 100.0%;">Name: 成大舊書店, Address: 嘉義市西區國華街60號, Phone_number: 05-2232555</div>`)[0];
+            popup_4bf95effbaaf4d31a7e4bee6a6a8c042.setContent(html_93f1ed6c37b24d618e9cef36be8e7522);
+        
+
+        marker_df0894e431e04727875f36ba5cb77c48.bindPopup(popup_4bf95effbaaf4d31a7e4bee6a6a8c042)
+        ;
+
+        
+    
+    
+            marker_df0894e431e04727875f36ba5cb77c48.bindTooltip(
+                `<div>
+                     成大舊書店
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_4b839a0e19df4caf9193160ac21decec = L.marker(
+                [23.46709, 120.4438],
+                {}
+            ).addTo(map_5d8db56ddc844efdb8a4f76c6cc63c46);
+        
+    
+        var popup_89308580d1894e6097c0690e829e347d = L.popup({"maxWidth": "100%"});
+
+        
+            var html_373436818d77471f8086f48ea8785830 = $(`<div id="html_373436818d77471f8086f48ea8785830" style="width: 100.0%; height: 100.0%;">Name: 杭州書店, Address: 嘉義市西區杭州三街66號, Phone_number: 05-2869204</div>`)[0];
+            popup_89308580d1894e6097c0690e829e347d.setContent(html_373436818d77471f8086f48ea8785830);
+        
+
+        marker_4b839a0e19df4caf9193160ac21decec.bindPopup(popup_89308580d1894e6097c0690e829e347d)
+        ;
+
+        
+    
+    
+            marker_4b839a0e19df4caf9193160ac21decec.bindTooltip(
+                `<div>
+                     杭州書店
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_48fac340f57f4bae86c305629b6daa08 = L.marker(
+                [23.48095, 120.44574],
+                {}
+            ).addTo(map_5d8db56ddc844efdb8a4f76c6cc63c46);
+        
+    
+        var popup_061b0fe4b52d430a88c827653cd71b51 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_468176b825594a0795cb376edce56ca9 = $(`<div id="html_468176b825594a0795cb376edce56ca9" style="width: 100.0%; height: 100.0%;">Name: 朗朗書店, Address: 嘉義市西區民生北路116號2樓, Phone_number: 05-2290116</div>`)[0];
+            popup_061b0fe4b52d430a88c827653cd71b51.setContent(html_468176b825594a0795cb376edce56ca9);
+        
+
+        marker_48fac340f57f4bae86c305629b6daa08.bindPopup(popup_061b0fe4b52d430a88c827653cd71b51)
+        ;
+
+        
+    
+    
+            marker_48fac340f57f4bae86c305629b6daa08.bindTooltip(
+                `<div>
+                     朗朗書店
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_e8ea59ef4d9b4b6e9712eb0b3fe02889 = L.marker(
+                [23.48346, 120.44291],
+                {}
+            ).addTo(map_5d8db56ddc844efdb8a4f76c6cc63c46);
+        
+    
+        var popup_ef27122e127745afa61adf78406c3207 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_bd995a70a40448398d1edf4177cf6004 = $(`<div id="html_bd995a70a40448398d1edf4177cf6004" style="width: 100.0%; height: 100.0%;">Name: 島呼冊店, Address: 嘉義市西區北興街86號, Phone_number: 05-2311031</div>`)[0];
+            popup_ef27122e127745afa61adf78406c3207.setContent(html_bd995a70a40448398d1edf4177cf6004);
+        
+
+        marker_e8ea59ef4d9b4b6e9712eb0b3fe02889.bindPopup(popup_ef27122e127745afa61adf78406c3207)
+        ;
+
+        
+    
+    
+            marker_e8ea59ef4d9b4b6e9712eb0b3fe02889.bindTooltip(
+                `<div>
+                     島呼冊店
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_19c2cc9093914094a54472f6d9a2acae = L.marker(
+                [23.46134, 120.44403],
+                {}
+            ).addTo(map_5d8db56ddc844efdb8a4f76c6cc63c46);
+        
+    
+        var popup_e8efa992bef2471db133806c0b398ae1 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_c197eac63a37417ba2f77ecb0d7a6923 = $(`<div id="html_c197eac63a37417ba2f77ecb0d7a6923" style="width: 100.0%; height: 100.0%;">Name: 陽光書局, Address: 嘉義市西區民生南路349號, Phone_number: 05-2859022</div>`)[0];
+            popup_e8efa992bef2471db133806c0b398ae1.setContent(html_c197eac63a37417ba2f77ecb0d7a6923);
+        
+
+        marker_19c2cc9093914094a54472f6d9a2acae.bindPopup(popup_e8efa992bef2471db133806c0b398ae1)
+        ;
+
+        
+    
+    
+            marker_19c2cc9093914094a54472f6d9a2acae.bindTooltip(
+                `<div>
+                     陽光書局
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_74c4a797d4fd46dc9ae9542a0cfea13c = L.marker(
+                [23.47901, 120.44407],
+                {}
+            ).addTo(map_5d8db56ddc844efdb8a4f76c6cc63c46);
+        
+    
+        var popup_19347978249c4330b779f324e8c25c93 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_a337e06c5872416fa625eaf08862e2f3 = $(`<div id="html_a337e06c5872416fa625eaf08862e2f3" style="width: 100.0%; height: 100.0%;">Name: 達摩二手書坊, Address: 嘉義市西區新榮路323號, Phone_number: 05-2167988</div>`)[0];
+            popup_19347978249c4330b779f324e8c25c93.setContent(html_a337e06c5872416fa625eaf08862e2f3);
+        
+
+        marker_74c4a797d4fd46dc9ae9542a0cfea13c.bindPopup(popup_19347978249c4330b779f324e8c25c93)
+        ;
+
+        
+    
+    
+            marker_74c4a797d4fd46dc9ae9542a0cfea13c.bindTooltip(
+                `<div>
+                     達摩二手書坊
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_14442b2aa1bc4276baa03b5fe6c48003 = L.marker(
+                [23.47558, 120.44454],
+                {}
+            ).addTo(map_5d8db56ddc844efdb8a4f76c6cc63c46);
+        
+    
+        var popup_17db9ed649f24461989bd5cb243b9364 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_c15e0eedb8e045b0824d416b8ad90125 = $(`<div id="html_c15e0eedb8e045b0824d416b8ad90125" style="width: 100.0%; height: 100.0%;">Name: 義豐書局, Address: 嘉義市西區民族路881號, Phone_number: 05-2221816</div>`)[0];
+            popup_17db9ed649f24461989bd5cb243b9364.setContent(html_c15e0eedb8e045b0824d416b8ad90125);
+        
+
+        marker_14442b2aa1bc4276baa03b5fe6c48003.bindPopup(popup_17db9ed649f24461989bd5cb243b9364)
+        ;
+
+        
+    
+    
+            marker_14442b2aa1bc4276baa03b5fe6c48003.bindTooltip(
+                `<div>
+                     義豐書局
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_9a86d94fb8cd4888bec864d10c5a0c16 = L.marker(
+                [23.47914, 120.44242],
+                {}
+            ).addTo(map_5d8db56ddc844efdb8a4f76c6cc63c46);
+        
+    
+        var popup_0ecbacd85e8a47c0ba8ff0d2637b598f = L.popup({"maxWidth": "100%"});
+
+        
+            var html_7cee3b39526e4e2ea3f57222fb8fa038 = $(`<div id="html_7cee3b39526e4e2ea3f57222fb8fa038" style="width: 100.0%; height: 100.0%;">Name: 墊腳石圖書文化廣場 嘉義店, Address: 嘉義市西區中山路583號, Phone_number: 05-2273928</div>`)[0];
+            popup_0ecbacd85e8a47c0ba8ff0d2637b598f.setContent(html_7cee3b39526e4e2ea3f57222fb8fa038);
+        
+
+        marker_9a86d94fb8cd4888bec864d10c5a0c16.bindPopup(popup_0ecbacd85e8a47c0ba8ff0d2637b598f)
+        ;
+
+        
+    
+    
+            marker_9a86d94fb8cd4888bec864d10c5a0c16.bindTooltip(
+                `<div>
+                     墊腳石圖書文化廣場 嘉義店
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_3f4dfa753c64432996eda188efdcecef = L.marker(
+                [23.48388, 120.43251],
+                {}
+            ).addTo(map_5d8db56ddc844efdb8a4f76c6cc63c46);
+        
+    
+        var popup_d22362959a2f412c975d55345533e62d = L.popup({"maxWidth": "100%"});
+
+        
+            var html_69106c7a1f4d4bc5bcd1180fc3cc7793 = $(`<div id="html_69106c7a1f4d4bc5bcd1180fc3cc7793" style="width: 100.0%; height: 100.0%;">Name: 德安書局, Address: 嘉義市西區德安路35號, Phone_number: 05-2338805</div>`)[0];
+            popup_d22362959a2f412c975d55345533e62d.setContent(html_69106c7a1f4d4bc5bcd1180fc3cc7793);
+        
+
+        marker_3f4dfa753c64432996eda188efdcecef.bindPopup(popup_d22362959a2f412c975d55345533e62d)
+        ;
+
+        
+    
+    
+            marker_3f4dfa753c64432996eda188efdcecef.bindTooltip(
+                `<div>
+                     德安書局
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c784c21985ee4a8fb0e5a6ee23276049 = L.marker(
+                [23.46112, 120.44391],
+                {}
+            ).addTo(map_5d8db56ddc844efdb8a4f76c6cc63c46);
+        
+    
+        var popup_baec9999219341fcbcbc22934a7b7be5 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_d16cf589db6d4b0bb03186387db226f8 = $(`<div id="html_d16cf589db6d4b0bb03186387db226f8" style="width: 100.0%; height: 100.0%;">Name: 學人書局, Address: 嘉義市西區民生南路359號, Phone_number: 05-2858231</div>`)[0];
+            popup_baec9999219341fcbcbc22934a7b7be5.setContent(html_d16cf589db6d4b0bb03186387db226f8);
+        
+
+        marker_c784c21985ee4a8fb0e5a6ee23276049.bindPopup(popup_baec9999219341fcbcbc22934a7b7be5)
+        ;
+
+        
+    
+    
+            marker_c784c21985ee4a8fb0e5a6ee23276049.bindTooltip(
+                `<div>
+                     學人書局
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_9ff4f9d35c2142ea952255fff666b08a = L.marker(
+                [23.47977, 120.44675],
+                {}
+            ).addTo(map_5d8db56ddc844efdb8a4f76c6cc63c46);
+        
+    
+        var popup_81f916bfc93b416db2ba985b40c96749 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_04245762166c4ede8f30977fab70e1d0 = $(`<div id="html_04245762166c4ede8f30977fab70e1d0" style="width: 100.0%; height: 100.0%;">Name: 鴻圖書局, Address: 嘉義市西區中山路370號, Phone_number: 05-2232080</div>`)[0];
+            popup_81f916bfc93b416db2ba985b40c96749.setContent(html_04245762166c4ede8f30977fab70e1d0);
+        
+
+        marker_9ff4f9d35c2142ea952255fff666b08a.bindPopup(popup_81f916bfc93b416db2ba985b40c96749)
+        ;
+
+        
+    
+    
+            marker_9ff4f9d35c2142ea952255fff666b08a.bindTooltip(
+                `<div>
+                     鴻圖書局
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            map_5d8db56ddc844efdb8a4f76c6cc63c46.fitBounds(
+                [[23.46112, 120.41779], [23.49927, 120.46302]],
+                {}
+            );
+        
+</script>

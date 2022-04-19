@@ -11,11 +11,12 @@
 
 ## Require modules:
 
-- dotenv: https://pypi.org/project/python-dotenv/
-- folium: https://python-visualization.github.io/folium/
-- geocoder: https://geocoder.readthedocs.io/
-- selenium: https://www.selenium.dev/
-- Pandas: https://pandas.pydata.org/
+- [dotenv](https://pypi.org/project/python-dotenv/)
+- [folium](https://python-visualization.github.io/folium/)
+- [geocoder](https://geocoder.readthedocs.io/)
+- [selenium](https://www.selenium.dev/)
+- [Pandas](https://pandas.pydata.org/)
+- [simplekml](https://simplekml.readthedocs.io/en/latest/)
 
 ## How to use
 
@@ -66,7 +67,11 @@ fmap = folium.Map(location=map_center, zoom_start=16, tiles="OpenStreetMap")
 fmap.save('map.html')
 ```
 
-同場加映，使用python開啟網頁，使用os模組轉成絕對路徑，再透過webbrowser開啟(使用者預設的瀏覽器)
+- [folium:Getting Started](https://python-visualization.github.io/folium/quickstart.html#Getting-Started)
+
+#### 自動開啟本地檔案
+
+使用os模組轉成絕對路徑，再透過webbrowser開啟(使用者預設的瀏覽器)
 
 ``` python
 import os
@@ -75,14 +80,13 @@ abs_path = os.path.abspath(path)
 webbrowser.open(abs_path)
 ```
 
-- [folium:Getting Started](https://python-visualization.github.io/folium/quickstart.html#Getting-Started)
 - [webbrowser --- 方便的Web浏览器控制器](https://docs.python.org/zh-cn/3/library/webbrowser.html)
 
 ### **folium 添加marker**
 
 所謂marker就是指我們在`google map`上常見的紅色標記，將來要透過marker添加商家的訊息上去。
 
-location參數一樣是輸入(lat,lng)，tooltip代表滑鼠懸停的訊息，popup表示點擊後的資訊
+location參數一樣是輸入`(lat,lng)`，tooltip代表滑鼠懸停的訊息，popup表示點擊後的資訊
 
 ``` python
 folium.Marker(location=gcode,tooltip=shopname,popup=popup).add_to(map)
@@ -121,7 +125,7 @@ load_dotenv() # 從.env載入API key
 key = os.getenv('BINGMAP_API_KEY')
 ```
 
-.env檔內容
+`.env`檔內容範例
 
 ``` .env
 BINGMAP_API_KEY = "YOUR API KEY"
@@ -138,20 +142,17 @@ selenium的缺點最明顯的就是執行緩慢，瀏覽器本身就是記憶體
 
 selenium使用`webdriver`操作瀏覽器，webdriver是針對瀏覽器撰寫的驅動程式，需要上selenium網站進行下載符合你的瀏覽器版本。
 
-第二行開啟了一個Chrome瀏覽器，參數指向webdriver的檔案地址
-第三行開啟了藝fun卷的網站
-注意在網站操作完畢後，使用`driver.close()`關閉driver
-
 ```python
 from selenium import webdriver
 driver = webdriver.Chrome('chromedriver.exe') # 開啟webdriver
 driver.get('https://artsfungo.moc.gov.tw/promote_s/public/store') # 開啟藝fun卷:合作業者
 ```
 
+第二行開啟了一個Chrome瀏覽器，參數指向webdriver的檔案地址
+第三行開啟了藝fun卷的網站
+注意在網站操作完畢後，使用`driver.close()`關閉driver
+
 - [Selenium](https://pypi.org/project/selenium/)
-- [Selenium with Python中文翻译文档](https://selenium-python-zh.readthedocs.io/en/latest/index.html)
-- [chromedriver-autoinstaller](https://pypi.org/project/chromedriver-autoinstaller/)
-- [Python爬蟲學習筆記(二) — Selenium自動化+Katalon Recorder](https://medium.com/@yanweiliu/python%E7%88%AC%E8%9F%B2%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98-%E4%BA%8C-selenium%E8%87%AA%E5%8B%95%E5%8C%96-ab0a27a94ff2)
 
 ### **輸入關鍵字**
 
@@ -339,7 +340,7 @@ with open('table.html','w',encoding='utf8') as file:
 
 **效率不高**
 
-可以發現使用`selenium`爬取資料相當花費時間，它本身做自動化而非設計來爬蟲的框架，開啟瀏覽器不僅耗時且花費記憶體，也無法針對ajax的部分做良好的處理，像是要爬取搜尋第二頁的內容，因為table內部本身已經有第一頁的資料，除非紀錄並比對內容差異，否則程式無法知道第二頁以後內容是否更新。
+可以發現使用`selenium`爬取資料相當花費時間，它本身做自動化而非設計來爬蟲的框架，開啟瀏覽器不僅耗時且花費記憶體，~~也無法針對ajax的部分做良好的處理~~，像是要爬取搜尋第二頁的內容，因為table內部本身已經有第一頁的資料，除非紀錄並比對內容差異，否則程式無法知道第二頁以後內容是否更新。
 
 另一個問題是我沒有採取`async`的方式，在將地址轉為經緯度值的時候都需要等待server回傳才能執行下一個動作。
 
@@ -372,7 +373,6 @@ folium的存檔功能還是要上網才能看到地圖，無法完全離線使�
 ### pandas datafram
 
 - [pandas入门](https://pda.readthedocs.io/en/latest/chp5.html)
-
 - [Add one row to pandas DataFrame](https://stackoverflow.com/questions/10715965/add-one-row-to-pandas-dataframe)
 
 ### AJAX處理

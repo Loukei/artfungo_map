@@ -15,8 +15,8 @@
 - 針對你的CSV檔格式
     - csv檔案第一列必須註明資料欄位名稱
     - 修改`fieldnames = ["行政區","店名","地址","電話","坐標(緯度)","坐標(經度)"]`以符合你的欄位名稱
-    - 修改`address_name`,指向你的地址欄位名稱如"地址"
-    - 撰寫一個函數將輸出的報告`results`轉換成`writekml.PlaceMark`,參考`convert_geocoding_result_to_palcemark()`
+    - 撰寫一個函數`convert_geocoding_result_to_palcemark()`
+        - 將輸出的報告`results`轉換成`writekml.PlaceMark`,紀錄(經度,緯度,店名,詳細資訊)
 
 ## Note
 
@@ -24,73 +24,41 @@
 - 回應時間較長
 - 只會回傳經緯度數值,不會有錯誤訊息與比對結果
 - 處理大型檔案時這種方式不適用
+
+為何要輸出csv報告
+- Geocoding的部分涉及了語意分析,你可以輸入一個明顯錯誤的地址,但卻得到"OK",這部分可能需要人工判讀
 '''
 
 #!/usr/bin/python3
-import csv
-from pathlib import Path
 from typing import List,Dict
 from os import getenv as os_getenv
 from dotenv import load_dotenv # read api key from (.env) file 
-from datetime import datetime,timezone
+from myutils import read_stores,write_csv_report,create_output_file_name
 import geocoding
 import writekml
 import folium 
 import drawmap
 
 def convert_geocoding_result_to_palcemark(result:Dict) -> writekml.PlaceMark:
-    """將地址轉經緯度的報告轉成PlaceMark
+    """將地址轉經緯度的報告{result}轉成PlaceMark格式
 
     Detail:
         PlaceMark主要用來儲存三個訊息: 經緯度(lat,lng),地標名稱(name),詳細描述(describe)
         不管在輸出kml或folium地圖所需的參數就只需這三個,但是使用者必須根據來源的csv格式親自處理這些轉換
 
     Args:
-        result (Dict): _description_
+        result (Dict): 經緯度轉換過後的資料,通常會同時包含
+            (店名,地址,電話): 原始檔案資料
+            (Provider,Success,Lat,Lng,Match_address,Err_Message): 地址轉換經緯度後的紀錄
 
     Returns:
         writekml.PlaceMark: 包含地點資訊的字典 ex: {"name":"","describe":"","lat":0.0,"lng":0.0}
     """
     describe:str = f'Name: {result["店名"]}, Address: {result["地址"]}, Phone_number: {result["電話"]}'
-    return writekml.PlaceMark(name=result["店名"],describe=describe,lat=result["坐標(緯度)"],lng=result["坐標(經度)"])
+    return writekml.PlaceMark(name=result["店名"],describe=describe,lat=result["lat"],lng=result["lng"])
 
 def placemark_to_foluimMarker(placemark:writekml.PlaceMark) -> folium.Marker:
     return folium.Marker(location=[placemark["lat"],placemark["lng"]],popup=placemark["describe"],tooltip=placemark["name"])
-
-def read_stores(input_file:str,fieldnames:List) -> List[Dict]:
-    with open(file = input_file, mode = 'r', encoding = 'utf-8', newline = '') as input:
-        csvReader = csv.DictReader(input,fieldnames)
-        next(csvReader,None) # skip header row
-        results:List[Dict] = []
-        for row in csvReader:
-            results.append(row) # merge 2 dict
-    return results
-
-def write_csv_report(output_file:str,results: List[Dict]) -> None:
-    """將轉換過的資料(results),寫入目標的csv檔(output_file)
-
-    Args:
-        results (List[Dict]): 地址轉換的列表
-        output_file (str): 儲存的CSV路徑位址
-    """
-    with open(output_file, mode='w', encoding='utf-8', newline='') as csvfile:
-        csvWriter = csv.DictWriter(csvfile,fieldnames=results[0].keys())
-        csvWriter.writeheader()
-        for result in results:
-            csvWriter.writerow(result)
-    pass
-
-def create_output_file_name(output_folder:str,input_file_path:str,suffix:str) -> str:
-    input_file_P = Path(input_file_path)
-    output_folder_P = Path(output_folder)
-    if(not input_file_P.is_file()):
-        raise ValueError(f"Input file <{input_file_path}> is not a file.")
-    # if(not input_file_P.suffix == suffix):
-    #     raise ValueError(f'Input file <{input_file_path}> is not a {suffix} file')
-    if(not output_folder_P.is_dir()):
-        raise ValueError(f'Output folder <{output_folder}> is not a folder.')
-    timestamp:str = datetime.strftime(datetime.now(tz=timezone.utc),"[%Y%m%d%z_%H'%M'%S]") # ex: "[20220412+0000_03'55'31]"
-    return output_folder_P.joinpath(timestamp + input_file_P.stem).with_suffix(suffix).as_posix()
 
 def get_APIKey_from_env()->str:
     """Try to load Geocoding API key in .env
@@ -113,12 +81,12 @@ def main(input_file:str,output_folder:str) -> None:
         bing_api_key = get_APIKey_from_env()
         fieldnames = ["行政區","店名","地址","電話","坐標(緯度)","坐標(經度)"]
         stores:List[Dict] = read_stores(filepath,fieldnames)
-        # --- 讀出店家資料後,將店家地址與轉換經緯度的結果整合,也可以考慮在這裡過濾錯誤的比對結果 ---
+        # --- 讀出店家資料後,將店家地址與轉換經緯度的結果整合,使用者也可以考慮在這裡過濾錯誤的比對結果 ---
         results:List[Dict] = []
         for store in stores:
-            r = geocoding.bing_address_geocoding(store["地址"],bing_api_key)
             print(f'Geocoding <{store["地址"]}>...')
-            results.append(store|r)
+            r = geocoding.bing_address_geocoding(store["地址"],bing_api_key)
+            results.append(store|r) #combine 2 dict
         # --- 寫入一個csv檔,用來觀察geocoding 結果 ---
         output_csv_file:str = create_output_file_name(output_folder,input_file,'.csv')
         write_csv_report(output_csv_file,results)
@@ -127,7 +95,7 @@ def main(input_file:str,output_folder:str) -> None:
         kml = writekml.create_kml(points=placemarks)
         kml.save(create_output_file_name(output_folder,input_file,'.kml'))
         # --- 繪製地圖並開檔 ---
-        markers:List[folium.Marker] = [ placemark_to_foluimMarker(p) for p in placemarks]
+        markers:List[folium.Marker] = [placemark_to_foluimMarker(p) for p in placemarks]
         map_path:str = create_output_file_name(output_folder,input_file,'.html')
         drawmap.draw_foluim_map(map_path,markers)
     except Exception as e:

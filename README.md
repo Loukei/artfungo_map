@@ -53,7 +53,7 @@ BINGMAP_API_KEY = "YOUR_KEY"
 
 ## 開發筆記
 
-傳送門
+[傳送門](https://github.com/Loukei/artfungo_map/blob/master/Doc/%E9%96%8B%E7%99%BC%E7%AD%86%E8%A8%98.md)
 
 ## 後記
 
@@ -63,7 +63,7 @@ BINGMAP_API_KEY = "YOUR_KEY"
 - 壞處就是這樣做比較耗資源
 - Selenium需要根據每個環境下載webdriver
   - 有一個開源工具[Webdriver Manager for Python](https://github.com/SergeyPirogov/webdriver_manager)可以處理webdriver的版本
-  - 或者把爬蟲放在Docker部屬
+  - 或者把爬蟲放在Docker部屬來解決
 
 ### 離線地圖
 
